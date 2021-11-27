@@ -12,6 +12,7 @@ class player(pygame.sprite.Sprite):
         self.movex = 0 # move along X
         self.movey = 0 # move along Y
         self.frame = 0 # count frames
+        self.dead = False
         self.images = []
         self.hp = 30
         self.max_hp = 30
@@ -37,19 +38,25 @@ class player(pygame.sprite.Sprite):
         """
         Update sprite position
         """
-        ani = 4
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
+        # moving up
+        if self.movey < 0:
+          self.frame += 1
+          if self.frame > 7:
+              self.frame = 0
+          self.image = self.images[self.frame // 4 + 4]
+
         # moving left
-        if self.movex < 0:
+        elif self.movex < 0:
             self.frame += 1
-            if self.frame > 8:
+            if self.frame > 7:
                 self.frame = 0
-            self.image = self.images[self.frame//4]
+            self.image = self.images[self.frame // 4 + 2]
 
         # moving right
-        if self.movex > 0:
+        elif self.movex > 0 or self.movey > 0:
             self.frame += 1
-            if self.frame > 8:
+            if self.frame > 7:
                 self.frame = 0
-            self.image = self.images[self.frame//4]
+                self.image = self.images[self.frame // 4]

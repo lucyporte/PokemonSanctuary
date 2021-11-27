@@ -49,6 +49,8 @@ class App:
     def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
         image = pygame.image.load(filename).convert()
         image = pygame.transform.scale(image, (x_resize, y_resize))
+        image.set_alpha(0)
+        self._display_surf.blit(image, (x_cord, y_cord))
         #Fucky wucky
         #self._display_surf.blit(image, (x_cord, y_cord))
         return image
@@ -155,8 +157,22 @@ class App:
 
     def on_loop(self):  # game loop possibly
         self.character.update()
+        if self.map.isDisallowedRegion(self.character.rect.x, self.character.rect.y):
+            if self.character.movex == 1: 
+                self.character.rect.x -= 1
+            if self.character.movex == -1: 
+                self.character.rect.x += 1
+            if self.character.movey == 1: 
+                self.character.rect.y -= 1
+            if self.character.movey == -1: 
+                self.character.rect.y += 1
+        if self.map.isDangerRegion(self.character.rect.x, self.character.rect.y):
+            self.player_list.empty()
+            self.character.dead = True
+
         if self.pokemon_list:
             self.pokemon.update()
+            
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
@@ -172,10 +188,10 @@ class App:
         if self.character.rect.y == 0 and self.map.getAbove() != None:
             self.map = self.map.getAbove()
             self.on_map_change()
-            self.character.rect.y = 390
+            self.character.rect.y = 385
         elif self.character.rect.y < 0:
             self.character.rect.y = 0
-        if self.character.rect.y == 395 and self.map.getBeneath() != None:
+        if self.character.rect.y == 385 and self.map.getBeneath() != None:
             self.map = self.map.getBeneath()
             self.on_map_change()
             self.character.rect.y = 10
