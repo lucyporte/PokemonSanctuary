@@ -46,6 +46,8 @@ class App:
         self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
         # Load textbox image
         self._tb= self.load_image("assets/menubox.png", 400, 100)
+        # Display the textbox
+        self._display_surf.blit(self._tb,(0,400))
         
  
     def on_event(self, event): #if we press the X button that quits
@@ -101,9 +103,6 @@ class App:
         self._display_surf.blit(self._water_tile,(0,0))
         self.player_list.draw(self._display_surf) # draw player
 
-        # For the text box
-        self._display_surf.blit(self._tb,(0,400))
-
         pygame.display.flip() #changes assets
 
     def on_cleanup(self): # Quit 
@@ -121,7 +120,7 @@ class App:
             self.on_cleanup()
 
     def text_surface(self, text, screen, line = "line1"):
-        self.textbox.add_line1(text, screen, pygame.font, line)
+        self.textbox.add_text(text, screen, pygame.font, line)
  
 if __name__ == "__main__" :
     theApp = App() # runs __init__()
