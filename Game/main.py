@@ -17,9 +17,9 @@ import sys
 # if not pg.mixer:
 #     print("Warning, sound disabled")
 
-tile1 = Tile("Game/assets/tile1.png")
-tile2 = TileWall("Game/assets/tile2.png")
-tile3 = TileClickable("Game/assets/tile3.png", "Thanks for clicking!")
+tile1 = Tile("assets/tile1.png")
+tile2 = TileWall("assets/tile2.png")
+tile3 = TileClickable("assets/tile3.png", "Thanks for clicking!")
 
 map_grid_1  = [
 [tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
@@ -49,7 +49,7 @@ class App:
     def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
         image = pygame.image.load(filename).convert()
         image = pygame.transform.scale(image, (x_resize, y_resize))
-        image.set_alpha(0)
+        image.set_alpha(100)
         self._display_surf.blit(image, (x_cord, y_cord))
         #Fucky wucky
         #self._display_surf.blit(image, (x_cord, y_cord))
@@ -101,9 +101,9 @@ class App:
         # this is how you load a Surface object (i.e. an image)
         self._image_surf = self.load_image(self.map.getImage(), 400, 400)
         # this is how you resize an image
-        self._water_tile= self.load_image("Game/assets/water_anim.png", 40, 40)
+        self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
         # Load textbox image
-        self._tb= self.load_image("Game/assets/menubox.png", 400, 100)
+        self._tb= self.load_image("assets/menubox.png", 400, 100)
         # Display the textbox
         self._display_surf.blit(self._tb,(0,400))
 
@@ -158,13 +158,13 @@ class App:
     def on_loop(self):  # game loop possibly
         self.character.update()
         if self.map.isDisallowedRegion(self.character.rect.x, self.character.rect.y):
-            if self.character.movex == 1: 
+            if self.character.movex == 1:
                 self.character.rect.x -= 1
-            if self.character.movex == -1: 
+            if self.character.movex == -1:
                 self.character.rect.x += 1
-            if self.character.movey == 1: 
+            if self.character.movey == 1:
                 self.character.rect.y -= 1
-            if self.character.movey == -1: 
+            if self.character.movey == -1:
                 self.character.rect.y += 1
         if self.map.isDangerRegion(self.character.rect.x, self.character.rect.y):
             self.player_list.empty()
@@ -172,7 +172,7 @@ class App:
 
         if self.pokemon_list:
             self.pokemon.update()
-            
+
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
