@@ -54,7 +54,7 @@ class PokemonImage():
         return self._height
 
 def getAll():
-    return [pokemon1, pokemon2, pokemon3]
+    return [pokemon1, pokemon2, pokemon3, pokemon4]
 
 def getRandom():
     return choice(getAll())
@@ -212,6 +212,59 @@ pokemon3 = Pokemon(
         ),
         PokemonImage(
             "assets/pokemon/3/towards2.png",
+            32,
+            32
+        )
+    )
+)
+
+pokemon4 = Pokemon(
+    "4",
+    "Miss Comrade",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/pokemon/4/left1.png",
+            32,
+            32
+        ),
+        PokemonImage(
+            "assets/pokemon/4/left2.png",
+            32,
+            32
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/pokemon/4/right1.png",
+            32,
+            32
+        ),
+        PokemonImage(
+            "assets/pokemon/4/right2.png",
+            32,
+            32
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/pokemon/4/away1.png",
+            32,
+            32
+        ),
+        PokemonImage(
+            "assets/pokemon/4/away2.png",
+            32,
+            32
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/pokemon/4/towards1.png",
+            32,
+            32
+        ),
+        PokemonImage(
+            "assets/pokemon/4/towards2.png",
             32,
             32
         )
