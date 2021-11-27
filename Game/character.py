@@ -35,18 +35,19 @@ class player(pygame.sprite.Sprite):
         """
         Update sprite position
         """
+        ani = 4
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        # # moving left
-        # if self.movex < 0:
-        #     self.frame += 1
-        #     if self.frame > 8:
-        #         self.frame = 0
-        #     self.image = self.images[self.frame//1]
+        # moving left
+        if self.movex < 0:
+            self.frame += 1
+            if self.frame > 8:
+                self.frame = 0
+            self.image = self.images[self.frame//4]
 
-        # # moving right
-        # if self.movex > 0:
-        #     self.frame += 1
-        #     if self.frame > 8:
-        #         self.frame = 0
-        #     self.image = self.images[self.frame//1]
+        # moving right
+        if self.movex > 0:
+            self.frame += 1
+            if self.frame > 8:
+                self.frame = 0
+            self.image = self.images[self.frame//4]
