@@ -6,6 +6,7 @@ from pygame.locals import *
 from character import player
 from textbox import Text
 from tilemap import Map, Tile, TileWall, TileClickable
+from combat import Combat, Enemy
 import mapmanager
 import pokemonmanager
 from pokemon import pokemon
@@ -38,6 +39,7 @@ class App:
         self._display_surf = None
         self._image_surf = None
         self._map = myMap
+        self.state = "exploring"
 
     def load_image(self, filename, x_cord, y_cord):
         image = pygame.image.load(filename).convert()
@@ -75,7 +77,7 @@ class App:
 
     def on_init(self):
         # Open a window on the screen
-        screen_width = 400 
+        screen_width = 400
         screen_height = 500
         self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
@@ -114,6 +116,9 @@ class App:
                 # print("This is a wall")
             elif isinstance(obj, TileClickable):
                 print(obj.click_message)
+                self.state = "combat"
+                e = Enemy(20)
+                self.combat = Combat(self._display_surf, self.character, e)
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
@@ -136,16 +141,18 @@ class App:
                 sys.exit()
 
         if event.type == pygame.KEYDOWN:
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
+            if pygame.key.get_pressed()[pygame.K_SPACE] and self.state == "exploring":
                 print("Space")
                 sample_txt = "Here is our text"
                 sample_2 = "please work"
                 sample_3 = "ugh work"
                 self.text_surface(sample_txt, self._display_surf)
                 self.text_surface(sample_2, self._display_surf, "line2")
-                self.text_surface(sample_3, self._display_surf, "line3")              
+                self.text_surface(sample_3, self._display_surf, "line3")
+            elif pygame.key.get_pressed()[pygame.K_SPACE] and self.state == "combat":
+                self.combat.take_turn()
 
-            
+
     def on_loop(self):  # game loop possibly
         self.character.update()
         if self.pokemon_list:
@@ -178,10 +185,20 @@ class App:
     def on_render(self):
         # this loads an image onto the surface (you can also load images on top of images)
         # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
-        self._display_surf.blit(self._image_surf, (0, 0))
-        self.player_list.draw(self._display_surf)  # draw player
-        self.pokemon_list.draw(self._display_surf) # draw pokemon
-        self.load_map(self._map)
+        if self.state == "exploring":
+            self._display_surf.blit(self._image_surf, (0, 0))
+            self.player_list.draw(self._display_surf)  # draw player
+            self.pokemon_list.draw(self._display_surf) # draw pokemon
+            self.load_map(self._map)
+        elif self.state == "combat":
+            if self.combat.finished:
+                pygame.time.wait(500)
+                self._tb= self.load_image("assets/menubox.png", 400, 100)
+                self._display_surf.blit(self._tb,(0,400))
+                self.state = "exploring"
+                return
+            self._display_surf.blit(self.combat.combat_surface, (0,0))
+            self.combat.update_combat(self._display_surf)
         pygame.display.flip()  # changes assets
         # self.load_map(self._map)
 

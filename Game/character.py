@@ -13,6 +13,8 @@ class player(pygame.sprite.Sprite):
         self.movey = 0 # move along Y
         self.frame = 0 # count frames
         self.images = []
+        self.hp = 30
+        self.max_hp = 30
         for i in range(1, 8):
           img = pygame.image.load('Game/Player/player_' + str(i) + '.png').convert()
           ALPHA = (0, 0, 0)
