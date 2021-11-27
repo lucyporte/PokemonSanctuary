@@ -47,7 +47,8 @@ class App:
     def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
         image = pygame.image.load(filename).convert()
         image = pygame.transform.scale(image, (x_resize, y_resize))
-        self._display_surf.blit(image, (x_cord, y_cord))
+        #Fucky wucky
+        #self._display_surf.blit(image, (x_cord, y_cord))
         return image
 
     def load_map(self, map, resolution=16):
