@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 # import sklearn
 from character import player
+from textbox import Text
 from tilemap import Map, Tile, TileWall, TileClickable
 import mapmanager
 import pokemonmanager
@@ -74,10 +75,11 @@ class App:
     def on_init(self):
         # Open a window on the screen
         screen_width = 400 
-        screen_height = 400
+        screen_height = 500
         self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
         self.character = player()  # spawn player
+        self.textbox = Text() # spawn textbox
         self.character.rect.x = 200  # go to x
         self.character.rect.y = 140  # go to y
         self.player_list = pygame.sprite.Group()
@@ -93,6 +95,12 @@ class App:
 
         # this is how you load a Surface object (i.e. an image)
         self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+        # this is how you resize an image
+        self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
+        # Load textbox image
+        self._tb= self.load_image("assets/menubox.png", 400, 100)
+        # Display the textbox
+        self._display_surf.blit(self._tb,(0,400))
 
     def on_event(self, event):  # if we press the X button that quits
         if event.type == QUIT:
@@ -126,6 +134,17 @@ class App:
                 pygame.quit()
                 sys.exit()
 
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                print("Space")
+                sample_txt = "Here is our text"
+                sample_2 = "please work"
+                sample_3 = "ugh work"
+                self.text_surface(sample_txt, self._display_surf)
+                self.text_surface(sample_2, self._display_surf, "line2")
+                self.text_surface(sample_3, self._display_surf, "line3")              
+
+            
     def on_loop(self):  # game loop possibly
         self.character.update()
         if self.character.rect.x == 0 and self.map.getLeft() != None:
@@ -177,16 +196,18 @@ class App:
         pygame.quit()
 
     def on_execute(self):
-        if self.on_init() == False:
-            self._running = False
+            if self.on_init() == False:
+                self._running = False
 
-        while self._running:
-            for event in pygame.event.get():
-                self.on_event(event)
-            self.on_loop()
-            self.on_render()
-        self.on_cleanup()
+            while self._running:
+                for event in pygame.event.get():
+                    self.on_event(event)
+                self.on_loop()
+                self.on_render()
+            self.on_cleanup()
 
+    def text_surface(self, text, screen, line = "line1"):
+        self.textbox.add_text(text, screen, pygame.font, line)
 
 if __name__ == "__main__":
     theApp = App()  # runs __init__()
