@@ -160,6 +160,7 @@ class App:
         if self.map.isDangerRegion(self.character.rect.x, self.character.rect.y):
             self.player_list.empty()
             self.character.dead = True
+
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
@@ -175,10 +176,10 @@ class App:
         if self.character.rect.y == 0 and self.map.getAbove() != None:
             self.map = self.map.getAbove()
             self.on_map_change()
-            self.character.rect.y = 390
+            self.character.rect.y = 385
         elif self.character.rect.y < 0:
             self.character.rect.y = 0
-        if self.character.rect.y == 395 and self.map.getBeneath() != None:
+        if self.character.rect.y == 385 and self.map.getBeneath() != None:
             self.map = self.map.getBeneath()
             self.on_map_change()
             self.character.rect.y = 10
