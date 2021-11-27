@@ -21,28 +21,32 @@ class player(pygame.sprite.Sprite):
           self.images.append(img)
         self.image = self.images[0]
         self.rect = self.image.get_rect()
-    def control(self,x,y):
+    def setXVelocity(self,x):
       """
-      control player movement
+      control player movement in the x direction
       """
-      self.movex += x
-      self.movey += y
+      self.movex = x
+    def setYVelocity(self,y):
+      """
+      control player movement in the y direction
+      """
+      self.movey = y
     def update(self):
         """
         Update sprite position
         """
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
-        # moving left
-        if self.movex < 0:
-            self.frame += 1
-            if self.frame > 8:
-                self.frame = 0
-            self.image = self.images[self.frame//ani]
+        # # moving left
+        # if self.movex < 0:
+        #     self.frame += 1
+        #     if self.frame > 8:
+        #         self.frame = 0
+        #     self.image = self.images[self.frame//1]
 
-        # moving right
-        if self.movex > 0:
-            self.frame += 1
-            if self.frame > 8:
-                self.frame = 0
-            self.image = self.images[self.frame//ani]
+        # # moving right
+        # if self.movex > 0:
+        #     self.frame += 1
+        #     if self.frame > 8:
+        #         self.frame = 0
+        #     self.image = self.images[self.frame//1]
