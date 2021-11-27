@@ -52,11 +52,11 @@ def getMaps():
 def getFirstMap():
     return spawn
 
-forest = Background("Forest", "assets/maps/forest.png", [[195, 155]])
-spawn = Background("Spawn", "assets/maps/spawn.png", [[155, 205], [155, 290], [245, 290], [245, 205]])
-city = Background("City", "assets/maps/city.png", [[160, 110]])
-meadow = Background("Meadow", "assets/maps/meadow.png", [[95, 255]])
-canyon = Background("Canyon", "assets/maps/canyon.png", [[190, 220]])
+forest = Background("Forest", "Game/assets/maps/forest.png", [[195, 155]])
+spawn = Background("Spawn", "Game/assets/maps/spawn.png", [[155, 205], [155, 290], [245, 290], [245, 205]])
+city = Background("City", "Game/assets/maps/city.png", [[160, 110]])
+meadow = Background("Meadow", "Game/assets/maps/meadow.png", [[95, 255]])
+canyon = Background("Canyon", "Game/assets/maps/canyon.png", [[190, 220]])
 
 forest.setRight(spawn)
 forest.setBeneath(meadow)

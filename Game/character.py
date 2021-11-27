@@ -14,7 +14,7 @@ class player(pygame.sprite.Sprite):
         self.frame = 0 # count frames
         self.images = []
         for i in range(1, 8):
-          img = pygame.image.load('Player/player_' + str(i) + '.png').convert()
+          img = pygame.image.load('Game/Player/player_' + str(i) + '.png').convert()
           ALPHA = (0, 0, 0)
           img.convert_alpha()     # optimise
           img.set_colorkey(ALPHA)

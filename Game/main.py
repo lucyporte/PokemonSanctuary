@@ -16,9 +16,9 @@ import sys
 # if not pg.mixer:
 #     print("Warning, sound disabled")
 
-tile1 = Tile("assets/tile1.png")
-tile2 = TileWall("assets/tile2.png")
-tile3 = TileClickable("assets/tile3.png", "Thanks for clicking!")
+tile1 = Tile("Game/assets/tile1.png")
+tile2 = TileWall("Game/assets/tile2.png")
+tile3 = TileClickable("Game/assets/tile3.png", "Thanks for clicking!")
 
 map_grid_1  = [
 [tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
@@ -97,9 +97,9 @@ class App:
         # this is how you load a Surface object (i.e. an image)
         self._image_surf = self.load_image(self.map.getImage(), 400, 400)
         # this is how you resize an image
-        self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
+        self._water_tile= self.load_image("Game/assets/water_anim.png", 40, 40)
         # Load textbox image
-        self._tb= self.load_image("assets/menubox.png", 400, 100)
+        self._tb= self.load_image("Game/assets/menubox.png", 400, 100)
         # Display the textbox
         self._display_surf.blit(self._tb,(0,400))
 
@@ -148,6 +148,8 @@ class App:
             
     def on_loop(self):  # game loop possibly
         self.character.update()
+        if self.pokemon_list:
+            self.pokemon.update()
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()

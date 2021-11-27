@@ -1,6 +1,8 @@
 import pygame
 import os
+from pygame import image
 from pygame.locals import *
+from random import randint
 
 class pokemon(pygame.sprite.Sprite):
     """
@@ -13,13 +15,27 @@ class pokemon(pygame.sprite.Sprite):
         self.movex = 0 # move along X
         self.movey = 0 # move along Y
         self.frame = 0 # count frames
-        self.images = []
-        for i in range(1, 8):
-          img = pygame.image.load(obj.getDownWalkSprite().getFrame1().getPath()).convert()
-          ALPHA = (0, 0, 0)
-          img.convert_alpha()     # optimise
-          img.set_colorkey(ALPHA)
-          self.images.append(img)
+        self.images = [0]*4
+        ALPHA = (0, 0, 0)
+        #randPoke = randint(1, 4)
+        img = pygame.image.load(obj.getDownWalkSprite().getFrame1().getPath()).convert()
+        img.convert_alpha()     # optimise
+        img.set_colorkey(ALPHA)
+        self.images[0] = img
+        img = pygame.image.load(obj.getLeftWalkSprite().getFrame1().getPath()).convert()
+        img.convert_alpha()     # optimise
+        img.set_colorkey(ALPHA)
+        self.images[1] = img
+        img = pygame.image.load(obj.getRightWalkSprite().getFrame1().getPath()).convert()
+        img.convert_alpha()     # optimise
+        img.set_colorkey(ALPHA)
+        self.images[2] = img
+        img = pygame.image.load(obj.getRightWalkSprite().getFrame1().getPath()).convert()
+        img.convert_alpha()     # optimise
+        img.set_colorkey(ALPHA)
+        self.images[3] = img
+        #pygame.image.load(obj.getRightWalkSprite().getFrame1().getPath()).convert()
+        #self.images[3] = pygame.image.load(obj.getUpWalkSprite().getFrame1().getPath()).convert()
         self.image = self.images[0]
         self.rect = self.image.get_rect()
     def setXVelocity(self,x):
@@ -36,18 +52,7 @@ class pokemon(pygame.sprite.Sprite):
         """
         Update sprite position
         """
-        self.rect.x = self.rect.x + self.movex
-        self.rect.y = self.rect.y + self.movey
-        # # moving left
-        # if self.movex < 0:
-        #     self.frame += 1
-        #     if self.frame > 8:
-        #         self.frame = 0
-        #     self.image = self.images[self.frame//1]
-
-        # # moving right
-        # if self.movex > 0:
-        #     self.frame += 1
-        #     if self.frame > 8:
-        #         self.frame = 0
-        #     self.image = self.images[self.frame//1]
+        randMove = randint(1,20)
+        if randMove == 1:
+          randPoke = randint(0,3)
+          self.image = self.images[randPoke]

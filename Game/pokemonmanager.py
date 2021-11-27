@@ -64,48 +64,48 @@ pokemon1 = Pokemon(
     "Pokemon 1",
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/1/left1.png",
+            "Game/assets/pokemon/1/left1.png",
             18,
             18
         ),
         PokemonImage(
-            "assets/pokemon/1/left2.png",
-            18,
-            18
-        )
-    ),
-    PokemonWalkingAnimation(
-        PokemonImage(
-            "assets/pokemon/1/right1.png",
-            18,
-            18
-        ),
-        PokemonImage(
-            "assets/pokemon/1/right2.png",
+            "Game/assets/pokemon/1/left2.png",
             18,
             18
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/1/away1.png",
+            "Game/assets/pokemon/1/right1.png",
+            18,
+            18
+        ),
+        PokemonImage(
+            "Game/assets/pokemon/1/right2.png",
+            18,
+            18
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "Game/assets/pokemon/1/away1.png",
             21,
             19
         ),
         PokemonImage(
-            "assets/pokemon/1/away2.png",
+            "Game/assets/pokemon/1/away2.png",
             21,
             19
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/1/towards1.png",
+            "Game/assets/pokemon/1/towards1.png",
             21,
             19
         ),
         PokemonImage(
-            "assets/pokemon/1/towards2.png",
+            "Game/assets/pokemon/1/towards2.png",
             21,
             19
         )
@@ -117,48 +117,48 @@ pokemon2 = Pokemon(
     "Pokemon 2",
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/2/left1.png",
+            "Game/assets/pokemon/2/left1.png",
             23,
             23
         ),
         PokemonImage(
-            "assets/pokemon/2/left2.png",
+            "Game/assets/pokemon/2/left2.png",
             26,
             22
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/2/right1.png",
+            "Game/assets/pokemon/2/right1.png",
             26,
             23
         ),
         PokemonImage(
-            "assets/pokemon/2/right2.png",
+            "Game/assets/pokemon/2/right2.png",
             26,
             22
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/2/away1.png",
+            "Game/assets/pokemon/2/away1.png",
             28,
             22
         ),
         PokemonImage(
-            "assets/pokemon/2/away2.png",
+            "Game/assets/pokemon/2/away2.png",
             26,
             23
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/2/towards1.png",
+            "Game/assets/pokemon/2/towards1.png",
             26,
             23
         ),
         PokemonImage(
-            "assets/pokemon/2/towards2.png",
+            "Game/assets/pokemon/2/towards2.png",
             28,
             22
         )
