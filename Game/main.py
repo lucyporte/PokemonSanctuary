@@ -129,7 +129,7 @@ class App:
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
-                
+
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 print("Space")
@@ -138,8 +138,8 @@ class App:
                 sample_3 = "ugh work"
                 self.text_surface(sample_txt, self._display_surf)
                 self.text_surface(sample_2, self._display_surf, "line2")
-                self.text_surface(sample_3, self._display_surf, "line3")              
-        
+                self.text_surface(sample_3, self._display_surf, "line3")
+
     def on_render(self):
       # this loads an image onto the surface (you can also load images on top of images)
       # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
@@ -149,9 +149,9 @@ class App:
 
         pygame.display.flip() #changes assets
 
-    def on_cleanup(self): # Quit 
+    def on_cleanup(self): # Quit
         pygame.quit()
-        
+
     def on_loop(self):  # game loop possibly
         self.character.update()
         if self.character.rect.x == 0 and self.map.getLeft() != None:
@@ -201,17 +201,7 @@ class App:
 
     def text_surface(self, text, screen, line = "line1"):
         self.textbox.add_text(text, screen, pygame.font, line)
- 
+
 if __name__ == "__main__" :
     theApp = App() # runs __init__()
     theApp.on_execute() # runs on_init(), then the game loop
-
-        if self.on_init() == False:
-            self._running = False
-
-        while self._running:
-            for event in pygame.event.get():
-                self.on_event(event)
-            self.on_loop()
-            self.on_render()
-        self.on_cleanup()
