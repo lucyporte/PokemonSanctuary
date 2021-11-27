@@ -2,7 +2,7 @@
 import os
 import pygame
 from pygame.locals import *
-import sklearn
+# import sklearn
 from character import player
 from tilemap import Map, Tile, TileWall, TileClickable
 import sys
@@ -75,8 +75,8 @@ class App:
         self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
         self.character = player()  # spawn player
-        self.character.rect.x = 10  # go to x
-        self.character.rect.y = 10  # go to y
+        self.character.rect.x = 200  # go to x
+        self.character.rect.y = 200  # go to y
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
         # this is the screen size, initial screen setup
@@ -102,22 +102,26 @@ class App:
                 print(obj.click_message)
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT or event.key == ord("a"):
-                self.character.control(1, 1)
+            if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
+                self.character.setXVelocity(-1)
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                print("right")
+                self.character.setXVelocity(1)
             if event.key == pygame.K_UP or event.key == ord("w"):
-                print("jump")
+                self.character.setYVelocity(-1)
+            if event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(1)
+            pygame.display.flip()
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == ord("a"):
-                print("left stop")
-            if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                print("right stop")
+            if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
+                self.character.setXVelocity(0)
+            if event.key == pygame.K_UP or event.key == ord("w") or event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(0)
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
     def on_loop(self):  # game loop possibly
+        self.character.update()
         pass
 
     def on_render(self):
