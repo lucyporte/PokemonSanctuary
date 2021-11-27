@@ -2,8 +2,10 @@
 import os
 import pygame
 from pygame.locals import *
-import sklearn
+import sys
+# import sklearn
 from character import player
+from textbox import Text
 from tilemap import Map, Tile, TileWall, TileClickable
 import sys
 
@@ -70,13 +72,14 @@ class App:
 
     def on_init(self):
         # Open a window on the screen
-        screen_width = 400
-        screen_height = 400
-        self._display_surf = pygame.display.set_mode([screen_width, screen_height])
+        screen_width=400
+        screen_height=500
+        self._display_surf = pygame.display.set_mode([screen_width,screen_height])
         pygame.init()
-        self.character = player()  # spawn player
-        self.character.rect.x = 10  # go to x
-        self.character.rect.y = 10  # go to y
+        self.character = player()   # spawn player
+        self.textbox = Text() # spawn textbox
+        self.character.rect.x = 125   # go to x
+        self.character.rect.y = 200  # go to y
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
         # this is the screen size, initial screen setup
@@ -87,7 +90,11 @@ class App:
         # this is how you load a Surface object (i.e. an image)
         self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
         # this is how you resize an image
-        self._water_tile = self.load_image("assets/water_anim.png", 40, 40)
+        self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
+        # Load textbox image
+        self._tb= self.load_image("assets/menubox.png", 400, 100)
+        # Display the textbox
+        self._display_surf.blit(self._tb,(0,400))
 
     def on_event(self, event):  # if we press the X button that quits
         if event.type == QUIT:
@@ -102,29 +109,67 @@ class App:
                 print(obj.click_message)
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT or event.key == ord("a"):
-                self.character.control(1, 1)
+            if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
+                self.character.setXVelocity(-1)
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                print("right")
+                self.character.setXVelocity(1)
             if event.key == pygame.K_UP or event.key == ord("w"):
-                print("jump")
+                self.character.setYVelocity(-1)
+            if event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(1)
+            pygame.display.flip()
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == ord("a"):
-                print("left stop")
-            if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                print("right stop")
+            if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
+                self.character.setXVelocity(0)
+            if event.key == pygame.K_UP or event.key == ord("w") or event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(0)
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                print("Space")
+                sample_txt = "Here is our text"
+                sample_2 = "please work"
+                sample_3 = "ugh work"
+                self.text_surface(sample_txt, self._display_surf)
+                self.text_surface(sample_2, self._display_surf, "line2")
+                self.text_surface(sample_3, self._display_surf, "line3")              
+
+            
     def on_loop(self):  # game loop possibly
-        pass
+        self.character.update()
+        if self.character.rect.x == 0 and self.map.getLeft() != None:
+            self.map = self.map.getLeft()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 390 - self.character.rect.x
+        elif self.character.rect.x < 0:
+            self.character.rect.x = 0
+        if self.character.rect.x == 395 and self.map.getRight() != None:
+            self.map = self.map.getRight()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 10
+        elif self.character.rect.x > 395:
+            self.character.rect.x = 395
+        if self.character.rect.y == 0 and self.map.getAbove() != None:
+            self.map = self.map.getAbove()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 390
+        elif self.character.rect.y < 0:
+            self.character.rect.y = 0
+        if self.character.rect.y == 395 and self.map.getBeneath() != None:
+            self.map = self.map.getBeneath()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 10
+        elif self.character.rect.y > 395:
+            self.character.rect.y = 395
 
     def on_render(self):
         # this loads an image onto the surface (you can also load images on top of images)
         # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
         self._display_surf.blit(self._image_surf, (0, 0))
-        self._display_surf.blit(self._water_tile, (0, 0))
         self.player_list.draw(self._display_surf)  # draw player
         self.load_map(self._map)
         pygame.display.flip()  # changes assets
@@ -134,16 +179,18 @@ class App:
         pygame.quit()
 
     def on_execute(self):
-        if self.on_init() == False:
-            self._running = False
+            if self.on_init() == False:
+                self._running = False
 
-        while self._running:
-            for event in pygame.event.get():
-                self.on_event(event)
-            self.on_loop()
-            self.on_render()
-        self.on_cleanup()
+            while self._running:
+                for event in pygame.event.get():
+                    self.on_event(event)
+                self.on_loop()
+                self.on_render()
+            self.on_cleanup()
 
+    def text_surface(self, text, screen, line = "line1"):
+        self.textbox.add_text(text, screen, pygame.font, line)
 
 if __name__ == "__main__":
     theApp = App()  # runs __init__()
