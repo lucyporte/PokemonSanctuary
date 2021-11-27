@@ -2,11 +2,12 @@
 import os
 import pygame
 from pygame.locals import *
+import sys
+from textbox import Text
 # import sklearn
 from character import player
 from tilemap import Map, Tile, TileWall, TileClickable
 import mapmanager
-import sys
 
 # if not pg.font:
 #     print("Warning, fonts disabled")
@@ -71,13 +72,15 @@ class App:
 
     def on_init(self):
         # Open a window on the screen
-        screen_width = 400 
-        screen_height = 400
-        self._display_surf = pygame.display.set_mode([screen_width, screen_height])
+        screen_width=400
+        screen_height=500
+        self._display_surf = pygame.display.set_mode([screen_width,screen_height])
         pygame.init()
-        self.character = player()  # spawn player
-        self.character.rect.x = 200  # go to x
-        self.character.rect.y = 200  # go to y
+        self.character = player()   # spawn player
+        self.textbox = Text() # spawn textbox
+        self.character.rect.x = 10   # go to x
+        self.character.rect.y = 10  # go to y
+
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
         self.map = mapmanager.getFirstMap()
@@ -87,7 +90,13 @@ class App:
         self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
-        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+        self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
+        # this is how you resize an image
+        self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
+        # Load textbox image
+        self._tb= self.load_image("assets/menubox.png", 400, 100)
+        # Display the textbox
+        self._display_surf.blit(self._tb,(0,400))
 
     def on_event(self, event):  # if we press the X button that quits
         if event.type == QUIT:
@@ -120,7 +129,29 @@ class App:
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
+                
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                print("Space")
+                sample_txt = "Here is our text"
+                sample_2 = "please work"
+                sample_3 = "ugh work"
+                self.text_surface(sample_txt, self._display_surf)
+                self.text_surface(sample_2, self._display_surf, "line2")
+                self.text_surface(sample_3, self._display_surf, "line3")              
+        
+    def on_render(self):
+      # this loads an image onto the surface (you can also load images on top of images)
+      # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
+        self._display_surf.blit(self._image_surf,(0,0))
+        self._display_surf.blit(self._water_tile,(0,0))
+        self.player_list.draw(self._display_surf) # draw player
 
+        pygame.display.flip() #changes assets
+
+    def on_cleanup(self): # Quit 
+        pygame.quit()
+        
     def on_loop(self):  # game loop possibly
         self.character.update()
         if self.character.rect.x == 0 and self.map.getLeft() != None:
@@ -157,10 +188,24 @@ class App:
         pygame.display.flip()  # changes assets
         # self.load_map(self._map)
 
-    def on_cleanup(self):  # Quit
-        pygame.quit()
-
     def on_execute(self):
+            if self.on_init() == False:
+                self._running = False
+
+            while self._running:
+                for event in pygame.event.get():
+                    self.on_event(event)
+                self.on_loop()
+                self.on_render()
+            self.on_cleanup()
+
+    def text_surface(self, text, screen, line = "line1"):
+        self.textbox.add_text(text, screen, pygame.font, line)
+ 
+if __name__ == "__main__" :
+    theApp = App() # runs __init__()
+    theApp.on_execute() # runs on_init(), then the game loop
+
         if self.on_init() == False:
             self._running = False
 
@@ -170,8 +215,3 @@ class App:
             self.on_loop()
             self.on_render()
         self.on_cleanup()
-
-
-if __name__ == "__main__":
-    theApp = App()  # runs __init__()
-    theApp.on_execute()  # runs on_init(), then the game loop
