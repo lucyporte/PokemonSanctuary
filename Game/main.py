@@ -51,6 +51,45 @@ class App:
     def on_event(self, event): #if we press the X button that quits
         if event.type == QUIT:
             self._running = False
+
+        if event.type == MOUSEBUTTONDOWN:
+            obj = self.get_tile_by_position(event.pos)
+            if isinstance(obj, TileWall):
+                pass
+                # print("This is a wall")
+            elif isinstance(obj, TileClickable):
+                print(obj.click_message)
+
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
+                self.character.setXVelocity(-1)
+            if event.key == pygame.K_RIGHT or event.key == ord("d"):
+                self.character.setXVelocity(1)
+            if event.key == pygame.K_UP or event.key == ord("w"):
+                self.character.setYVelocity(-1)
+            if event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(1)
+            pygame.display.flip()
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
+                self.character.setXVelocity(0)
+            if event.key == pygame.K_UP or event.key == ord("w") or event.key == pygame.K_DOWN or event.key == ord("s"):
+                self.character.setYVelocity(0)
+            if event.key == ord("q"):
+                pygame.quit()
+                sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[pygame.K_SPACE]:
+                print("Space")
+                sample_txt = "Here is our text"
+                sample_2 = "please work"
+                sample_3 = "ugh work"
+                self.text_surface(sample_txt, self._display_surf)
+                self.text_surface(sample_2, self._display_surf, "line2")
+                self.text_surface(sample_3, self._display_surf, "line3")              
+
             
     def on_loop(self): #game loop possibly
         pass
@@ -64,9 +103,6 @@ class App:
 
         # For the text box
         self._display_surf.blit(self._tb,(0,400))
-        sample_txt = "Here is our text, Bask in it's glory"
-        self.text_surface(sample_txt, self._display_surf)
-        self.text_surface(sample_txt, self._display_surf)
 
         pygame.display.flip() #changes assets
 
@@ -74,36 +110,18 @@ class App:
         pygame.quit()
  
     def on_execute(self):
-        if self.on_init() == False:
-            self._running = False
- 
-        while( self._running ):
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit(); sys.exit()
+            if self.on_init() == False:
+                self._running = False
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT or event.key == ord('a'):
-                        self.character.control(1,1)
-                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                        print('right')
-                    if event.key == pygame.K_UP or event.key == ord('w'):
-                        print('jump')
+            while self._running:
+                for event in pygame.event.get():
+                    self.on_event(event)
+                self.on_loop()
+                self.on_render()
+            self.on_cleanup()
 
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_LEFT or event.key == ord('a'):
-                        print('left stop')
-                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                        print('right stop')
-                    if event.key == ord('q'):
-                        pygame.quit()
-                        sys.exit()
-            self.on_loop()
-            self.on_render()
-        self.on_cleanup()
-
-    def text_surface(self, text, screen):
-        self.textbox.add_text(text, screen, pygame.font)
+    def text_surface(self, text, screen, line = "line1"):
+        self.textbox.add_line1(text, screen, pygame.font, line)
  
 if __name__ == "__main__" :
     theApp = App() # runs __init__()
