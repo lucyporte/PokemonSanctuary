@@ -133,12 +133,14 @@ class App:
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 print("Space")
-                sample_txt = "Here is our text"
-                sample_2 = "please work"
-                sample_3 = "ugh work"
+                sample_txt = "Here is our text (:"
+                sample_2 = "line 2"
+                sample_3 = "lines 3, 4 and 5"
                 self.text_surface(sample_txt, self._display_surf)
                 self.text_surface(sample_2, self._display_surf, "line2")
                 self.text_surface(sample_3, self._display_surf, "line3")
+                self.text_surface(sample_3, self._display_surf, "line4")
+                self.text_surface(sample_3, self._display_surf, "line5")
 
     def on_render(self):
       # this loads an image onto the surface (you can also load images on top of images)
