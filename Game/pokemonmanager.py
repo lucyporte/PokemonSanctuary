@@ -1,3 +1,5 @@
+from random import choice
+
 class Pokemon():
     def __init__(self, id, name, left, right, up, down):
         self._id = id
@@ -53,6 +55,9 @@ class PokemonImage():
 
 def getAll():
     return [pokemon1, pokemon2]
+
+def getRandom():
+    return choice(getAll())
 
 pokemon1 = Pokemon(
     "1",

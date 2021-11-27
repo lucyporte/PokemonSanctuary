@@ -1,7 +1,10 @@
+from random import choice
+
 class Background():
-    def __init__(self, name, image):
+    def __init__(self, name, image, pokemonSpawns):
         self._name = name
         self._image = image
+        self._pokemonSpawns = pokemonSpawns
         self._left = None
         self._right = None
         self._beneath = None
@@ -12,6 +15,12 @@ class Background():
 
     def getImage(self):
         return self._image
+
+    def getAllPokemonSpawns(self):
+        return self._pokemonSpawns
+
+    def getRandomPokemonSpawn(self):
+        return choice(self.getAllPokemonSpawns())
 
     def setLeft(self, left):
         self._left = left
@@ -43,11 +52,11 @@ def getMaps():
 def getFirstMap():
     return spawn
 
-forest = Background("Forest", "assets/maps/forest.png")
-spawn = Background("Spawn", "assets/maps/spawn.png")
-city = Background("City", "assets/maps/city.png")
-meadow = Background("Meadow", "assets/maps/meadow.png")
-canyon = Background("Canyon", "assets/maps/canyon.png")
+forest = Background("Forest", "assets/maps/forest.png", [[195, 155]])
+spawn = Background("Spawn", "assets/maps/spawn.png", [[155, 205], [155, 290], [245, 290], [245, 205]])
+city = Background("City", "assets/maps/city.png", [[160, 110]])
+meadow = Background("Meadow", "assets/maps/meadow.png", [[95, 255]])
+canyon = Background("Canyon", "assets/maps/canyon.png", [[190, 220]])
 
 forest.setRight(spawn)
 forest.setBeneath(meadow)
@@ -62,4 +71,4 @@ meadow.setAbove(forest)
 meadow.setRight(canyon)
 
 canyon.setLeft(meadow)
-meadow.setAbove(spawn)
+canyon.setAbove(spawn)
