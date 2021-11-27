@@ -2,11 +2,13 @@
 import os
 import pygame
 from pygame.locals import *
-import sys
 # import sklearn
 from character import player
 from textbox import Text
 from tilemap import Map, Tile, TileWall, TileClickable
+import mapmanager
+import pokemonmanager
+from pokemon import pokemon
 import sys
 
 # if not pg.font:
@@ -72,23 +74,27 @@ class App:
 
     def on_init(self):
         # Open a window on the screen
-        screen_width=400
-        screen_height=500
-        self._display_surf = pygame.display.set_mode([screen_width,screen_height])
+        screen_width = 400 
+        screen_height = 500
+        self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
-        self.character = player()   # spawn player
+        self.character = player()  # spawn player
         self.textbox = Text() # spawn textbox
-        self.character.rect.x = 125   # go to x
-        self.character.rect.y = 200  # go to y
+        self.character.rect.x = 200  # go to x
+        self.character.rect.y = 140  # go to y
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
+        self.pokemon = None
+        self.pokemon_list = pygame.sprite.Group()
+        self.map = mapmanager.getFirstMap()
+        self.pokemon_manager = pokemonmanager.getAll()
         # this is the screen size, initial screen setup
         # self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
         self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
-        self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
+        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
         # this is how you resize an image
         self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
         # Load textbox image
@@ -143,25 +149,25 @@ class App:
         self.character.update()
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
-            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.on_map_change()
             self.character.rect.x = 390 - self.character.rect.x
         elif self.character.rect.x < 0:
             self.character.rect.x = 0
         if self.character.rect.x == 395 and self.map.getRight() != None:
             self.map = self.map.getRight()
-            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.on_map_change()
             self.character.rect.x = 10
         elif self.character.rect.x > 395:
             self.character.rect.x = 395
         if self.character.rect.y == 0 and self.map.getAbove() != None:
             self.map = self.map.getAbove()
-            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.on_map_change()
             self.character.rect.y = 390
         elif self.character.rect.y < 0:
             self.character.rect.y = 0
         if self.character.rect.y == 395 and self.map.getBeneath() != None:
             self.map = self.map.getBeneath()
-            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.on_map_change()
             self.character.rect.y = 10
         elif self.character.rect.y > 395:
             self.character.rect.y = 395
@@ -171,9 +177,20 @@ class App:
         # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
         self._display_surf.blit(self._image_surf, (0, 0))
         self.player_list.draw(self._display_surf)  # draw player
+        self.pokemon_list.draw(self._display_surf) # draw pokemon
         self.load_map(self._map)
         pygame.display.flip()  # changes assets
         # self.load_map(self._map)
+
+    def on_map_change(self):
+        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+        self.pokemon_list.empty()
+        new_pokemon = pokemonmanager.getRandom()
+        coords = self.map.getRandomPokemonSpawn()
+        self.pokemon = pokemon(new_pokemon)
+        self.pokemon.rect.x = coords[0]
+        self.pokemon.rect.y = coords[1]
+        self.pokemon_list.add(self.pokemon)
 
     def on_cleanup(self):  # Quit
         pygame.quit()
