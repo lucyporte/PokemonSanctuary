@@ -6,6 +6,7 @@ from pygame.locals import *
 from character import player
 from tilemap import Map, Tile, TileWall, TileClickable
 import mapmanager
+import pokemonmanager
 import sys
 
 # if not pg.font:
@@ -81,6 +82,7 @@ class App:
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
         self.map = mapmanager.getFirstMap()
+        self.pokemon = pokemonmanager.getAll()
         # this is the screen size, initial screen setup
         # self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
