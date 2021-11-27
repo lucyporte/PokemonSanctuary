@@ -47,6 +47,7 @@ class App:
     def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
         image = pygame.image.load(filename).convert()
         image = pygame.transform.scale(image, (x_resize, y_resize))
+        image.set_alpha(0)
         self._display_surf.blit(image, (x_cord, y_cord))
         return image
 
@@ -107,6 +108,7 @@ class App:
             self._running = False
 
         if event.type == MOUSEBUTTONDOWN:
+            print(self.character.rect.x, self.character.rect.y)
             obj = self.get_tile_by_position(event.pos)
             if isinstance(obj, TileWall):
                 pass
@@ -147,6 +149,15 @@ class App:
             
     def on_loop(self):  # game loop possibly
         self.character.update()
+        if self.map.isDisallowedRegion(self.character.rect.x, self.character.rect.y):
+            if self.character.movex == 1: 
+                self.character.rect.x -= 1
+            if self.character.movex == -1: 
+                self.character.rect.x += 1
+            if self.character.movey == 1: 
+                self.character.rect.y -= 1
+            if self.character.movey == -1: 
+                self.character.rect.y += 1
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
