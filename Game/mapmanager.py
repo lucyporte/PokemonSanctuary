@@ -17,7 +17,7 @@ class Background():
         self._left = left
 
     def getLeft(self):
-        return self.left
+        return self._left
     
     def setRight(self, right):
         self._right = right
