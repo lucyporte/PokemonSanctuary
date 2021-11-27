@@ -5,6 +5,7 @@ from pygame.locals import *
 # import sklearn
 from character import player
 from tilemap import Map, Tile, TileWall, TileClickable
+import mapmanager
 import sys
 
 # if not pg.font:
@@ -85,7 +86,7 @@ class App:
         self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
-        self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
+        self._image_surf = self.load_image(mapmanager.getFirstMap().getImage(), 400, 400)
         # this is how you resize an image
         self._water_tile = self.load_image("assets/water_anim.png", 40, 40)
 
