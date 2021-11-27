@@ -2,8 +2,10 @@
 import os
 import pygame
 from pygame.locals import *
-import sklearn
+import sys
+# import sklearn
 from character import player
+from textbox import Text
 
 # if not pg.font:
 #     print("Warning, fonts disabled")
@@ -24,10 +26,11 @@ class App:
     def on_init(self):
         # Open a window on the screen
         screen_width=400
-        screen_height=400
+        screen_height=500
         self._display_surf = pygame.display.set_mode([screen_width,screen_height])
         pygame.init()
         self.character = player()   # spawn player
+        self.textbox = Text() # spawn textbox
         self.character.rect.x = 10   # go to x
         self.character.rect.y = 10  # go to y
         self.player_list = pygame.sprite.Group()
@@ -41,6 +44,8 @@ class App:
         self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
         # this is how you resize an image
         self._water_tile= self.load_image("assets/water_anim.png", 40, 40)
+        # Load textbox image
+        self._tb= self.load_image("assets/menubox.png", 400, 100)
         
  
     def on_event(self, event): #if we press the X button that quits
@@ -56,10 +61,15 @@ class App:
         self._display_surf.blit(self._image_surf,(0,0))
         self._display_surf.blit(self._water_tile,(0,0))
         self.player_list.draw(self._display_surf) # draw player
+
+        # For the text box
+        self._display_surf.blit(self._tb,(0,400))
+        sample_txt = "Here is our text, Bask in it's glory"
+        self.text_surface(sample_txt, self._display_surf)
+        self.text_surface(sample_txt, self._display_surf)
+
         pygame.display.flip() #changes assets
 
-        
- 
     def on_cleanup(self): # Quit 
         pygame.quit()
  
@@ -91,6 +101,9 @@ class App:
             self.on_loop()
             self.on_render()
         self.on_cleanup()
+
+    def text_surface(self, text, screen):
+        self.textbox.add_text(text, screen, pygame.font)
  
 if __name__ == "__main__" :
     theApp = App() # runs __init__()
