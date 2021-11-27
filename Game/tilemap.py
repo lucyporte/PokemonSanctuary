@@ -20,16 +20,3 @@ class TileClickable(Tile):
     super().__init__(filepath)
     self.blocked = True
     self.click_message = message
-
-tile1 = Tile("assets/tile1.png")
-tile2 = TileWall("assets/tile2.png")
-tile3 = TileClickable("assets/tile3.png", "Thanks for clicking!")
-
-map_grid_1 = [
-[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, None, tile1, tile1, tile3, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1]
-]
