@@ -14,7 +14,7 @@ class player(pygame.sprite.Sprite):
         self.frame = 0 # count frames
         self.dead = False
         self.images = []
-        for i in range(1, 9):
+        for i in range(1, 7):
           img = pygame.image.load('Player/player_' + str(i) + '.png').convert()
           ALPHA = (0, 0, 0)
           img.convert_alpha()     # optimise
@@ -43,18 +43,18 @@ class player(pygame.sprite.Sprite):
           self.frame += 1
           if self.frame > 7:
               self.frame = 0
-          self.image = self.images[self.frame//4 + 4]
+          self.image = self.images[self.frame // 4 + 4]
 
         # moving left
         elif self.movex < 0:
             self.frame += 1
             if self.frame > 7:
                 self.frame = 0
-            self.image = self.images[self.frame//4]
+            self.image = self.images[self.frame // 4 + 2]
 
         # moving right
         elif self.movex > 0 or self.movey > 0:
             self.frame += 1
             if self.frame > 7:
                 self.frame = 0
-            self.image = self.images[self.frame//4]
+            self.image = self.images[self.frame // 4]
