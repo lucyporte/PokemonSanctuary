@@ -8,7 +8,6 @@ class pokemon(pygame.sprite.Sprite):
     """
 
     def __init__(self, obj):
-        print(obj)
         pygame.sprite.Sprite.__init__(self)
         self.movex = 0 # move along X
         self.movey = 0 # move along Y

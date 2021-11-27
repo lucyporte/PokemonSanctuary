@@ -1,7 +1,7 @@
 from random import choice
 
 class Background():
-    def __init__(self, name, image, pokemonSpawns, disallowedRegions):
+    def __init__(self, name, image, pokemonSpawns, disallowedRegions, dangerRegions):
         self._name = name
         self._image = image
         self._pokemonSpawns = pokemonSpawns
@@ -10,6 +10,7 @@ class Background():
         self._beneath = None
         self._above = None
         self._disallowedRegions = disallowedRegions
+        self._dangerRegions = dangerRegions
 
     def getName(self):
         return self._name
@@ -53,6 +54,12 @@ class Background():
                 return True
         return False
 
+    def isDangerRegion(self, x, y):
+        for region in self._dangerRegions:
+            if region[0] < x < region[2] and region[1] < y < region[3]:
+                return True
+        return False
+
 def getMaps():
     return [forest, spawn, city, meadow, canyon]
 
@@ -75,7 +82,8 @@ forest = Background(
         [0, 260, 90, 400],
         [305, 0, 400, 230],
         [90, 0, 260, 50]
-    ]
+    ],
+    []
 )
 spawn = Background(
     "Spawn", 
@@ -89,7 +97,8 @@ spawn = Background(
     [
         [160, 40, 240, 115], 
         [190, 220, 225, 250]
-    ]
+    ],
+    []
 )
 city = Background(
     "City", 
@@ -105,7 +114,8 @@ city = Background(
         [225, 195, 280, 400],
         [225, 0, 400, 165],
         [310, 315, 365, 365]
-    ]
+    ],
+    []
 )
 meadow = Background(
     "Meadow", 
@@ -113,6 +123,7 @@ meadow = Background(
     [
         [95, 255]
     ], 
+    [],
     [
         [0, 325, 40, 380],
         [40, 335, 100, 390],
@@ -136,6 +147,7 @@ canyon = Background(
     [
         [190, 220]
     ],
+    [],
     [
         [250, 0, 355, 35],
         [245, 35, 350, 70],

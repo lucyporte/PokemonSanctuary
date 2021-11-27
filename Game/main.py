@@ -108,7 +108,6 @@ class App:
             self._running = False
 
         if event.type == MOUSEBUTTONDOWN:
-            print(self.character.rect.x, self.character.rect.y)
             obj = self.get_tile_by_position(event.pos)
             if isinstance(obj, TileWall):
                 pass
@@ -158,6 +157,9 @@ class App:
                 self.character.rect.y -= 1
             if self.character.movey == -1: 
                 self.character.rect.y += 1
+        if self.map.isDangerRegion(self.character.rect.x, self.character.rect.y):
+            self.player_list.empty()
+            self.character.dead = True
         if self.character.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
