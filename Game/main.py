@@ -5,6 +5,7 @@ from pygame.locals import *
 # import sklearn
 from character import player
 from tilemap import Map, Tile, TileWall, TileClickable
+import mapmanager
 import sys
 
 # if not pg.font:
@@ -70,7 +71,7 @@ class App:
 
     def on_init(self):
         # Open a window on the screen
-        screen_width = 400
+        screen_width = 400 
         screen_height = 400
         self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
@@ -79,15 +80,14 @@ class App:
         self.character.rect.y = 200  # go to y
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
+        self.map = mapmanager.getFirstMap()
         # this is the screen size, initial screen setup
         # self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
         self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
-        self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
-        # this is how you resize an image
-        self._water_tile = self.load_image("assets/water_anim.png", 40, 40)
+        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
 
     def on_event(self, event):  # if we press the X button that quits
         if event.type == QUIT:
@@ -120,15 +120,38 @@ class App:
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
+
     def on_loop(self):  # game loop possibly
         self.character.update()
-        pass
+        if self.character.rect.x == 0 and self.map.getLeft() != None:
+            self.map = self.map.getLeft()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 390 - self.character.rect.x
+        elif self.character.rect.x < 0:
+            self.character.rect.x = 0
+        if self.character.rect.x == 395 and self.map.getRight() != None:
+            self.map = self.map.getRight()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 10
+        elif self.character.rect.x > 395:
+            self.character.rect.x = 395
+        if self.character.rect.y == 0 and self.map.getAbove() != None:
+            self.map = self.map.getAbove()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 390
+        elif self.character.rect.y < 0:
+            self.character.rect.y = 0
+        if self.character.rect.y == 395 and self.map.getBeneath() != None:
+            self.map = self.map.getBeneath()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 10
+        elif self.character.rect.y > 395:
+            self.character.rect.y = 395
 
     def on_render(self):
         # this loads an image onto the surface (you can also load images on top of images)
         # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
         self._display_surf.blit(self._image_surf, (0, 0))
-        self._display_surf.blit(self._water_tile, (0, 0))
         self.player_list.draw(self._display_surf)  # draw player
         self.load_map(self._map)
         pygame.display.flip()  # changes assets
