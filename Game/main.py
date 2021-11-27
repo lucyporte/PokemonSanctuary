@@ -3,7 +3,7 @@ import os
 import pygame
 from pygame.locals import *
 import sklearn
-from character import Player
+from character import player
 
 # if not pg.font:
 #     print("Warning, fonts disabled")
@@ -22,14 +22,18 @@ class App:
       return image
  
     def on_init(self):
+        # Open a window on the screen
+        screen_width=400
+        screen_height=400
+        self._display_surf = pygame.display.set_mode([screen_width,screen_height])
         pygame.init()
-        character = player()   # spawn player
-        character.rect.x = 10   # go to x
-        character.rect.y = 10  # go to y
-        player_list = pygame.sprite.Group()
-        player_list.add(character)
+        self.character = player()   # spawn player
+        self.character.rect.x = 10   # go to x
+        self.character.rect.y = 10  # go to y
+        self.player_list = pygame.sprite.Group()
+        self.player_list.add(self.character)
         # this is the screen size, initial screen setup
-        self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
+        #self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
         self._running = True # is game running
 
@@ -51,6 +55,7 @@ class App:
       # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
         self._display_surf.blit(self._image_surf,(0,0))
         self._display_surf.blit(self._water_tile,(0,0))
+        self.player_list.draw(self._display_surf) # draw player
         pygame.display.flip() #changes assets
 
         
@@ -64,7 +69,25 @@ class App:
  
         while( self._running ):
             for event in pygame.event.get():
-                self.on_event(event)
+                if event.type == pygame.QUIT:
+                    pygame.quit(); sys.exit()
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT or event.key == ord('a'):
+                        self.character.control(1,1)
+                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                        print('right')
+                    if event.key == pygame.K_UP or event.key == ord('w'):
+                        print('jump')
+
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT or event.key == ord('a'):
+                        print('left stop')
+                    if event.key == pygame.K_RIGHT or event.key == ord('d'):
+                        print('right stop')
+                    if event.key == ord('q'):
+                        pygame.quit()
+                        sys.exit()
             self.on_loop()
             self.on_render()
         self.on_cleanup()
@@ -72,4 +95,5 @@ class App:
 if __name__ == "__main__" :
     theApp = App() # runs __init__()
     theApp.on_execute() # runs on_init(), then the game loop
+
 
