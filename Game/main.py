@@ -3,26 +3,73 @@ import os
 import pygame
 from pygame.locals import *
 import sys
+from textbox import Text
 # import sklearn
 from character import player
-from textbox import Text
+from tilemap import Map, Tile, TileWall, TileClickable
+import mapmanager
 
 # if not pg.font:
 #     print("Warning, fonts disabled")
 # if not pg.mixer:
 #     print("Warning, sound disabled")
 
+tile1 = Tile("assets/tile1.png")
+tile2 = TileWall("assets/tile2.png")
+tile3 = TileClickable("assets/tile3.png", "Thanks for clicking!")
+
+map_grid_1  = [
+[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
+[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
+[tile1, tile2, None, tile1, tile1, tile3, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
+[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
+[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
+[tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1]
+]
+
+myMap = Map(map_grid_1)
+
+
 class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
         self._image_surf = None
-      
+        self._map = myMap
+
     def load_image(self, filename, x_cord, y_cord):
-      image = pygame.image.load(filename).convert()
-      image = pygame.transform.scale(image,(x_cord, y_cord))
-      return image
- 
+        image = pygame.image.load(filename).convert()
+        image = pygame.transform.scale(image, (x_cord, y_cord))
+        return image
+
+    def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
+        image = pygame.image.load(filename).convert()
+        image = pygame.transform.scale(image, (x_resize, y_resize))
+        self._display_surf.blit(image, (x_cord, y_cord))
+        return image
+
+    def load_map(self, map, resolution=16):
+        x = 0
+        y = 0
+        for t_row in map.tiles:
+            for t in t_row:
+                if t == None:
+                    x += resolution
+                    continue
+                self.load_tile_image(t.filepath, x, y)
+                x += resolution
+            y += resolution
+            x = 0
+
+    def get_tile_by_position(self, pos):
+        if pos[0] > len(self._map.tiles[0] * 16) or pos[1] > len(self._map.tiles * 16):
+            print("Clicking outside of map range")
+            return False
+        x_dex = pos[0] // 16
+        y_dex = pos[1] // 16
+        print(f"You clicked at ({x_dex}, {y_dex})")
+        return self._map.tiles[y_dex][x_dex]
+
     def on_init(self):
         # Open a window on the screen
         screen_width=400
@@ -33,12 +80,14 @@ class App:
         self.textbox = Text() # spawn textbox
         self.character.rect.x = 10   # go to x
         self.character.rect.y = 10  # go to y
+
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.character)
+        self.map = mapmanager.getFirstMap()
         # this is the screen size, initial screen setup
-        #self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
+        # self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
-        self._running = True # is game running
+        self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
         self._image_surf = self.load_image("assets/sample_map.png", 400, 400)
@@ -48,9 +97,8 @@ class App:
         self._tb= self.load_image("assets/menubox.png", 400, 100)
         # Display the textbox
         self._display_surf.blit(self._tb,(0,400))
-        
- 
-    def on_event(self, event): #if we press the X button that quits
+
+    def on_event(self, event):  # if we press the X button that quits
         if event.type == QUIT:
             self._running = False
 
@@ -81,7 +129,7 @@ class App:
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
-
+                
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_SPACE]:
                 print("Space")
@@ -91,10 +139,6 @@ class App:
                 self.text_surface(sample_txt, self._display_surf)
                 self.text_surface(sample_2, self._display_surf, "line2")
                 self.text_surface(sample_3, self._display_surf, "line3")              
-
-            
-    def on_loop(self): #game loop possibly
-        pass
         
     def on_render(self):
       # this loads an image onto the surface (you can also load images on top of images)
@@ -107,7 +151,43 @@ class App:
 
     def on_cleanup(self): # Quit 
         pygame.quit()
- 
+        
+    def on_loop(self):  # game loop possibly
+        self.character.update()
+        if self.character.rect.x == 0 and self.map.getLeft() != None:
+            self.map = self.map.getLeft()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 390 - self.character.rect.x
+        elif self.character.rect.x < 0:
+            self.character.rect.x = 0
+        if self.character.rect.x == 395 and self.map.getRight() != None:
+            self.map = self.map.getRight()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.x = 10
+        elif self.character.rect.x > 395:
+            self.character.rect.x = 395
+        if self.character.rect.y == 0 and self.map.getAbove() != None:
+            self.map = self.map.getAbove()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 390
+        elif self.character.rect.y < 0:
+            self.character.rect.y = 0
+        if self.character.rect.y == 395 and self.map.getBeneath() != None:
+            self.map = self.map.getBeneath()
+            self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+            self.character.rect.y = 10
+        elif self.character.rect.y > 395:
+            self.character.rect.y = 395
+
+    def on_render(self):
+        # this loads an image onto the surface (you can also load images on top of images)
+        # surface_object_to_draw_on.blit(image_to_draw, (x,y)) # (0,0) is top left
+        self._display_surf.blit(self._image_surf, (0, 0))
+        self.player_list.draw(self._display_surf)  # draw player
+        self.load_map(self._map)
+        pygame.display.flip()  # changes assets
+        # self.load_map(self._map)
+
     def on_execute(self):
             if self.on_init() == False:
                 self._running = False
@@ -126,4 +206,12 @@ if __name__ == "__main__" :
     theApp = App() # runs __init__()
     theApp.on_execute() # runs on_init(), then the game loop
 
+        if self.on_init() == False:
+            self._running = False
 
+        while self._running:
+            for event in pygame.event.get():
+                self.on_event(event)
+            self.on_loop()
+            self.on_render()
+        self.on_cleanup()
