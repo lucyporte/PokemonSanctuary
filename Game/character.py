@@ -12,6 +12,7 @@ class player(pygame.sprite.Sprite):
         self.movex = 0 # move along X
         self.movey = 0 # move along Y
         self.frame = 0 # count frames
+        self.dead = False
         self.images = []
         for i in range(1, 8):
           img = pygame.image.load('Player/player_' + str(i) + '.png').convert()
