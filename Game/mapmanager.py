@@ -43,11 +43,11 @@ def getMaps():
 def getFirstMap():
     return spawn
 
-forest = Background("Forest", "assets/forest.png")
-spawn = Background("Spawn", "assets/spawn.png")
-city = Background("City", "assets/city.png")
-meadow = Background("Meadow", "assets/meadow.png")
-canyon = Background("Canyon", "assets/canyon.png")
+forest = Background("Forest", "assets/maps/forest.png")
+spawn = Background("Spawn", "assets/maps/spawn.png")
+city = Background("City", "assets/maps/city.png")
+meadow = Background("Meadow", "assets/maps/meadow.png")
+canyon = Background("Canyon", "assets/maps/canyon.png")
 
 forest.setRight(spawn)
 forest.setBeneath(meadow)
