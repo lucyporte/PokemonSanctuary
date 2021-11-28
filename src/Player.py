@@ -95,7 +95,7 @@ class Player(pygame.sprite.Sprite):
                     self.frame = 0
                 # Use sprites where player is facing to the left
                 self.image = self.images[self.frame // 4]
-        
+
         # Update Counter
         self.movement += 1
         if self.movement > 19:

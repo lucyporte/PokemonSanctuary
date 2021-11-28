@@ -245,7 +245,7 @@ class App:
         Defines what should happen in the game execution sequence
         """
         # Wait for intialisation before running program
-        if self.on_init() == False:
+        if not self.on_init():
             self._running = False
 
         # Start game loop
