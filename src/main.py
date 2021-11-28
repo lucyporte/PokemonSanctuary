@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys
 from random import randint
+from MapManager import Background
 
 from utils import load_image
 
@@ -176,6 +177,33 @@ class App:
             # Respawn after 5 seconds
             pygame.time.delay(5000)
             self.on_init()
+
+        # print(self.player.rect.x)
+        # print(self.player.rect.y)
+        # print(self.map.get_name())
+        # Detect if player should enter the sanctuary
+        if self.map.get_name() == "Spawn" and 180 < self.player.rect.x < 230 and 110 < self.player.rect.y < 130:
+            # print("Nppp")
+            # input()
+            self.map = Background(
+                    "Pokemon Sanctuary",
+                    "assets/images/maps/sanctuary.png",
+                    [
+                        [70, 100],
+                        [95, 135], # Pokemon spawns - chairs?
+                        [120, 120],
+                        []
+
+                    ],
+                    [], # Interesting
+                    [   [50, 0, 350, 0],
+                        [350, 300, 50, 0]
+                        ], # Disallowed
+                    [] # Danger
+                )
+            self.on_map_change()
+            self.player.rect.x = 200
+            self.player.rect.y = 200
 
         # Redraw Pokemon at their current position if they exist
         if self.pokemon_list:

@@ -322,6 +322,7 @@ canyon = Background(
     ]
 )
 
+
 forest.set_right(spawn, 235, 275)
 forest.set_beneath(meadow, 95, 135)
 
