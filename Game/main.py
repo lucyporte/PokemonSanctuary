@@ -1,15 +1,14 @@
 # Import Modules
-import os
 import pygame
 from pygame.locals import *
-# import sklearn
-from character import player
-from textbox import Text
+
+from Player import Player
+from Pokemon import Pokemon
+from TextBox import TextBox
 from tilemap import Map, Tile, TileWall, TileClickable
 from combat import Combat, Enemy
-import mapmanager
-import pokemonmanager
-from pokemon import pokemon
+import MapManager
+import PokemonManager
 import sys
 
 # if not pg.font:
@@ -83,16 +82,16 @@ class App:
         screen_height = 500
         self._display_surf = pygame.display.set_mode([screen_width, screen_height])
         pygame.init()
-        self.character = player()  # spawn player
-        self.textbox = Text() # spawn textbox
-        self.character.rect.x = 200  # go to x
-        self.character.rect.y = 140  # go to y
+        self.player = Player()  # spawn player
+        self.textbox = TextBox() # spawn textbox
+        self.player.rect.x = 200  # go to x
+        self.player.rect.y = 140  # go to y
         self.player_list = pygame.sprite.Group()
-        self.player_list.add(self.character)
+        self.player_list.add(self.player)
         self.pokemon = None
         self.pokemon_list = pygame.sprite.Group()
-        self.map = mapmanager.getFirstMap()
-        self.pokemon_manager = pokemonmanager.getAll()
+        self.map = MapManager.getFirstMap()
+        self.pokemon_manager = PokemonManager.getAll()
         # this is the screen size, initial screen setup
         # self._display_surf = pygame.display.set_mode((400,400), pygame.HWSURFACE)
 
@@ -120,24 +119,24 @@ class App:
                 print(obj.click_message)
                 self.state = "combat"
                 e = Enemy(20)
-                self.combat = Combat(self._display_surf, self.character, e)
+                self.combat = Combat(self._display_surf, self.player, e)
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
-                self.character.setXVelocity(-1)
+                self.player.setXVelocity(-1)
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                self.character.setXVelocity(1)
+                self.player.setXVelocity(1)
             if event.key == pygame.K_UP or event.key == ord("w"):
-                self.character.setYVelocity(-1)
+                self.player.setYVelocity(-1)
             if event.key == pygame.K_DOWN or event.key == ord("s"):
-                self.character.setYVelocity(1)
+                self.player.setYVelocity(1)
             pygame.display.flip()
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
-                self.character.setXVelocity(0)
+                self.player.setXVelocity(0)
             if event.key == pygame.K_UP or event.key == ord("w") or event.key == pygame.K_DOWN or event.key == ord("s"):
-                self.character.setYVelocity(0)
+                self.player.setYVelocity(0)
             if event.key == ord("q"):
                 pygame.quit()
                 sys.exit()
@@ -149,54 +148,54 @@ class App:
                 sample_2 = "please work"
                 sample_3 = "ugh work"
                 self.text_surface(sample_txt, self._display_surf)
-                self.text_surface(sample_2, self._display_surf, "line2")
-                self.text_surface(sample_3, self._display_surf, "line3")
+                self.text_surface(sample_2, self._display_surf, 2)
+                self.text_surface(sample_3, self._display_surf, 3)
             elif pygame.key.get_pressed()[pygame.K_SPACE] and self.state == "combat":
                 self.combat.take_turn()
 
 
     def on_loop(self):  # game loop possibly
-        self.character.update()
-        if self.map.isDisallowedRegion(self.character.rect.x, self.character.rect.y):
-            if self.character.movex == 1:
-                self.character.rect.x -= 1
-            if self.character.movex == -1:
-                self.character.rect.x += 1
-            if self.character.movey == 1:
-                self.character.rect.y -= 1
-            if self.character.movey == -1:
-                self.character.rect.y += 1
-        if self.map.isDangerRegion(self.character.rect.x, self.character.rect.y):
+        self.player.update()
+        if self.map.isDisallowedRegion(self.player.rect.x, self.player.rect.y):
+            if self.player.velocityX == 1:
+                self.player.rect.x -= 1
+            if self.player.velocityX == -1:
+                self.player.rect.x += 1
+            if self.player.velocityY == 1:
+                self.player.rect.y -= 1
+            if self.player.velocityY == -1:
+                self.player.rect.y += 1
+        if self.map.isDangerRegion(self.player.rect.x, self.player.rect.y):
             self.player_list.empty()
-            self.character.dead = True
+            self.player.dead = True
 
         if self.pokemon_list:
             self.pokemon.update()
 
-        if self.character.rect.x == 0 and self.map.getLeft() != None:
+        if self.player.rect.x == 0 and self.map.getLeft() != None:
             self.map = self.map.getLeft()
             self.on_map_change()
-            self.character.rect.x = 390 - self.character.rect.x
-        elif self.character.rect.x < 0:
-            self.character.rect.x = 0
-        if self.character.rect.x == 395 and self.map.getRight() != None:
+            self.player.rect.x = 390 - self.player.rect.x
+        elif self.player.rect.x < 0:
+            self.player.rect.x = 0
+        if self.player.rect.x == 395 and self.map.getRight() != None:
             self.map = self.map.getRight()
             self.on_map_change()
-            self.character.rect.x = 10
-        elif self.character.rect.x > 395:
-            self.character.rect.x = 395
-        if self.character.rect.y == 0 and self.map.getAbove() != None:
+            self.player.rect.x = 10
+        elif self.player.rect.x > 395:
+            self.player.rect.x = 395
+        if self.player.rect.y == 0 and self.map.getAbove() != None:
             self.map = self.map.getAbove()
             self.on_map_change()
-            self.character.rect.y = 385
-        elif self.character.rect.y < 0:
-            self.character.rect.y = 0
-        if self.character.rect.y == 385 and self.map.getBeneath() != None:
+            self.player.rect.y = 385
+        elif self.player.rect.y < 0:
+            self.player.rect.y = 0
+        if self.player.rect.y == 385 and self.map.getBeneath() != None:
             self.map = self.map.getBeneath()
             self.on_map_change()
-            self.character.rect.y = 10
-        elif self.character.rect.y > 395:
-            self.character.rect.y = 395
+            self.player.rect.y = 10
+        elif self.player.rect.y > 395:
+            self.player.rect.y = 395
 
     def on_render(self):
         # this loads an image onto the surface (you can also load images on top of images)
@@ -221,9 +220,9 @@ class App:
     def on_map_change(self):
         self._image_surf = self.load_image(self.map.getImage(), 400, 400)
         self.pokemon_list.empty()
-        new_pokemon = pokemonmanager.getRandom()
+        new_pokemon = PokemonManager.getRandom()
         coords = self.map.getRandomPokemonSpawn()
-        self.pokemon = pokemon(new_pokemon)
+        self.pokemon = Pokemon(new_pokemon)
         self.pokemon.rect.x = coords[0]
         self.pokemon.rect.y = coords[1]
         self.pokemon_list.add(self.pokemon)
@@ -242,8 +241,8 @@ class App:
                 self.on_render()
             self.on_cleanup()
 
-    def text_surface(self, text, screen, line = "line1"):
-        self.textbox.add_text(text, screen, pygame.font, line)
+    def text_surface(self, text, screen, line = 1):
+        self.textbox.set_text(text, screen, pygame.font, line)
 
 if __name__ == "__main__":
     theApp = App()  # runs __init__()
