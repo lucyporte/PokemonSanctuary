@@ -10,8 +10,9 @@ from Player import Player
 from Pokemon import Pokemon
 from TextBox import TextBox
 from Combat import Combat
+from Start import Start
+from PokemonManager import PokemonManager
 import MapManager
-import PokemonManager
 import db
 
 
@@ -20,7 +21,7 @@ class App:
         self._running = True
         self.screen = None
         self.map_background = None
-        self.state = "exploring"
+        self.state = "start"
 
     def on_init(self):
         """
@@ -37,8 +38,12 @@ class App:
         # Set window width and height
         self.screen = pygame.display.set_mode([400, 500])
 
+        # Generate start object
+        self.start = Start(self.screen)
+
         # Generate textbox
         self.textbox = TextBox(self.screen)
+        self.textbox.set_text("I gotta catch them all")
 
         # Generate player
         self.player = Player()
@@ -52,7 +57,7 @@ class App:
         # Set up Pokemon
         self.pokemon = None
         self.pokemon_list = pygame.sprite.Group()
-        self.pokemon_manager = PokemonManager.get_all()
+        self.pokemon_manager = PokemonManager()
 
         # Set up map
         self.map = MapManager.get_first_map()
@@ -72,16 +77,27 @@ class App:
         if event.type == QUIT:
             self._running = False
 
+        if self.state == "start":
+            if event.type == KEYDOWN:
+                self.start.finished = True
+                self.textbox = TextBox(self.screen)
+
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
             # Check if an interesting region has been clicked
             is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
             if is_interesting_region:
                 # Display information in text box
-                self.textbox.set_text(is_interesting_region)
+                lines = is_interesting_region.split("/n")
+                count = 1
+                for line in lines:
+                    self.textbox.set_text(line, count)
+                    count += 1
+                count = 1
             else:
                 # Clear information in text box
                 self.textbox.set_text("")
+            print(pygame.mouse.get_pos())
 
             # Check if a Pokemon has been clicked
             if self.pokemon:
@@ -90,29 +106,30 @@ class App:
                 if pokemon_x < event.pos[0] < pokemon_x + 30 and pokemon_y < event.pos[1] < pokemon_y + 30:
                     # A Pokemon was clicked, so open the combat screen
                     self.state = "combat"
-                    self.combat = Combat(self.screen, self.player, self.pokemon)
+                    self.combat = Combat(self.screen, self.player, self.pokemon, self.pokemon_manager)
                     # Remove the Pokemon
                     self.pokemon = None
                     self.pokemon_list.empty()
 
         # Handle a keypress starting
+        steps = 1
         if event.type == pygame.KEYDOWN:
             # Detect left key or "a" key
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
                 # Move player left
-                self.player.set_x_velocity(-1)
+                self.player.set_x_velocity(-steps)
             # Detect right key or "d" key
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
                 # Move player right
-                self.player.set_x_velocity(1)
+                self.player.set_x_velocity(steps)
             # Detect up key or "w" key
             if event.key == pygame.K_UP or event.key == ord("w"):
                 # Move player up
-                self.player.set_y_velocity(-1)
+                self.player.set_y_velocity(-steps)
             # Detect down key or "s" key
             if event.key == pygame.K_DOWN or event.key == ord("s"):
                 # Move player down
-                self.player.set_y_velocity(1)
+                self.player.set_y_velocity(steps)
             # Redraw GUI
             pygame.display.flip()
 
@@ -169,14 +186,8 @@ class App:
         # Detect if player has entered a dangerous region
         if self.map.is_danger_region(self.player.rect.x, self.player.rect.y):
             # Kill player
-            self.player_list.empty()
             self.player.dead = True
-            pygame.mixer.music.pause()
-            self.on_render()
-            self.textbox.set_text("You died.")
-            # Respawn after 5 seconds
-            pygame.time.delay(5000)
-            self.on_init()
+        self.on_player_death()
 
         
         # print(self.map.get_name())
@@ -216,6 +227,8 @@ class App:
             self.player.rect.x = 390 - self.player.rect.x
         elif self.player.rect.x < 0:
             self.player.rect.x = 0
+            if self.map.get_left_bounds() and self.map.get_left_bounds()[0] < self.player.rect.y < self.map.get_left_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone to the right
         if self.player.rect.x == 395 and self.map.get_right() and self.map.get_right_bounds()[0] < self.player.rect.y < self.map.get_right_bounds()[1]:
             self.map = self.map.get_right()
@@ -223,6 +236,8 @@ class App:
             self.player.rect.x = 10
         elif self.player.rect.x > 395:
             self.player.rect.x = 395
+            if self.map.get_right_bounds() and self.map.get_right_bounds()[0] < self.player.rect.y < self.map.get_right_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone at the top
         if self.player.rect.y == 0 and self.map.get_above() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
             self.map = self.map.get_above()
@@ -230,6 +245,8 @@ class App:
             self.player.rect.y = 380
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
+            if self.map.get_above_bounds() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone at the bottom
         if self.player.rect.y == 215 and self.map.get_beneath() and 155<self.player.rect.x<200 and self.map.get_name()=="Pokemon Sanctuary":
             self.map = self.map.get_beneath()
@@ -242,6 +259,8 @@ class App:
             self.player.rect.y = 10
         elif self.player.rect.y > 385:
             self.player.rect.y = 385
+            if self.map.get_beneath_bounds() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
 
     def on_render(self):
         """
@@ -268,6 +287,16 @@ class App:
             self.screen.blit(self.combat.combat_surface, (0, 0))
             # Run combat
             self.combat.update_combat(self.screen)
+        elif self.state == "start":
+            if self.start.finished:
+                self.textbox = TextBox(self.screen)
+                self.textbox.set_text("Welcome to Pokemon Sanctuary")
+                # Change state back to exploring
+                self.state = "exploring"
+                return
+            # Draw start background
+            self.screen.blit(self.start.start_surface, (0, 0))
+            self.textbox.set_text("Press Anything to Start")
 
         # Draw mouse custom cursor
         if pygame.mouse.get_pos()[1] < 385:
@@ -286,19 +315,33 @@ class App:
         self.pokemon_list.empty()
         # Possibly spawn new Pokemon
         if randint(0, 4) == 0:
-            new_pokemon = PokemonManager.get_random()
-            coords = self.map.get_random_pokemon_spawn()
-            self.pokemon = Pokemon(new_pokemon)
-            self.pokemon.rect.x = coords[0]
-            self.pokemon.rect.y = coords[1]
-            self.pokemon_list.add(self.pokemon)
-            # Display text message
-            analyse = db.analyse(self.pokemon.data.get_id())
-            self.textbox.set_text(analyse[0])
-            self.textbox.set_text(analyse[1], 2)
-            self.textbox.set_text(analyse[2], 3)
+            new_pokemon = self.pokemon_manager.get_random_available_pokemon()
+            if new_pokemon:
+                coords = self.map.get_random_pokemon_spawn()
+                self.pokemon = Pokemon(new_pokemon)
+                self.pokemon.rect.x = coords[0]
+                self.pokemon.rect.y = coords[1]
+                self.pokemon_list.add(self.pokemon)
+                # Display text message
+                analyse = db.analyse(self.pokemon.data.get_id())
+                self.textbox.set_text(analyse[0])
+                self.textbox.set_text(analyse[1], 2)
+                self.textbox.set_text(analyse[2], 3)
         else:
             self.textbox.set_text("")
+
+    def on_player_death(self):
+        """
+        Handle a player death
+        """
+        if self.player.dead:
+            self.player_list.empty()
+            pygame.mixer.music.pause()
+            self.on_render()
+            self.textbox.set_text("You died.")
+            # Respawn after 5 seconds
+            pygame.time.delay(5000)
+            self.on_init()
 
     def on_cleanup(self):
         """

@@ -225,7 +225,18 @@ forest = Background(
     [
         [195, 155]
     ],
-    [],
+    [
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",109, 166, 172, 223),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",220, 166, 270, 223),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",109, 79, 172, 134),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",220, 79, 270, 136),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",115, 249, 77, 218),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",82, 14, 280, 37),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",2, 261, 81, 378),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",289, 1, 374, 221),
+        InterestingRegion("These are trees /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",1, 1, 81, 218),
+        
+    ],
     [
         [120, 175, 190, 225],
         [210, 175, 280, 225],
@@ -235,7 +246,8 @@ forest = Background(
         [0, 0, 90, 230],
         [0, 260, 90, 400],
         [305, 0, 400, 230],
-        [90, 0, 260, 50]
+        [90, 0, 260, 50],
+        [0, 0, 400, 45]
     ],
     []
 )
@@ -248,7 +260,10 @@ spawn = Background(
         [245, 290],
         [245, 205]
     ],
-    [],
+    [
+        InterestingRegion("This is our home /nThis will where I will sleep /nwhen I have caught them all",161, 58, 226, 121),
+        InterestingRegion("This is a tree /nThis will make the pokemon /nfeel safe /ngo catch them all",80, 213, 201, 246)
+    ],
     [
         [160, 40, 240, 115],
         [190, 220, 225, 250]
@@ -261,7 +276,14 @@ city = Background(
     [
         [160, 110]
     ],
-    [],
+    [
+        InterestingRegion("This is a house /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",1, 188, 181, 228),
+        InterestingRegion("This is a house /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",12, 257, 178, 303),
+        InterestingRegion("This is a house /nPokemon don't live there /nNot relevant to/ncatching them all",315, 313, 362, 351),
+        InterestingRegion("This is a house /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",226, 199, 274, 381),
+        InterestingRegion("This is a building /nI think I started there /nNot relevant to/ncatching them all",19, 33, 72, 110),
+        InterestingRegion("This is a building /nI think there were more of me /nin there once. not relevant/nto catching them all",74, 7, 132, 107)
+    ],
     [
         [25, 40, 85, 120],
         [85, 5, 150, 120],
@@ -279,7 +301,12 @@ meadow = Background(
     [
         [95, 255]
     ],
-    [],
+    [
+        InterestingRegion("This is a river /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",0, 319, 197, 352),
+        InterestingRegion("This is a river /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",184, 266, 228, 322),
+        InterestingRegion("This is a river /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",163, 117, 235, 220),
+        InterestingRegion("This is a river /nPokemon don't live there /nanymore. Not relevant to/ncatching them all",200, 2, 225, 113)
+    ],
     [],
     [
         [0, 325, 40, 380],
@@ -304,7 +331,11 @@ canyon = Background(
     [
         [190, 220]
     ],
-    [],
+    [
+        InterestingRegion("This is a canyon /nIt's a long drop./nNot relevant to/ncatching them all",236, 0,322, 223),
+        InterestingRegion("This is a canyon /nIt's a long drop./nNot relevant to/ncatching them all",218, 271, 338, 382),
+        InterestingRegion("This is a bridge it looks unsafe/nBut it might lead to Pokemon /nI should cross it/nTo catch them all",215, 229, 320, 264),
+    ],
     [],
     [
         [250, 0, 355, 35],
@@ -322,18 +353,22 @@ canyon = Background(
     ]
 )
 
-
+forest.set_left(None, 230, 270)
 forest.set_right(spawn, 235, 275)
 forest.set_beneath(meadow, 95, 135)
 
 spawn.set_left(forest, 235, 275)
-spawn.set_beneath(canyon, 190, 230)
 spawn.set_right(city, 235, 275)
+spawn.set_beneath(canyon, 190, 230)
 
 city.set_left(spawn, 235, 275)
+city.set_above(None, 185, 230)
+city.set_right(None, 155, 190)
+city.set_beneath(None, 185, 230)
 
 meadow.set_above(forest, 95, 135)
 meadow.set_right(canyon, 235, 275)
 
 canyon.set_left(meadow, 235, 275)
 canyon.set_above(spawn, 190, 230)
+canyon.set_right(None, 235, 275)
