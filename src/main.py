@@ -178,8 +178,7 @@ class App:
             pygame.time.delay(5000)
             self.on_init()
 
-        # print(self.player.rect.x)
-        # print(self.player.rect.y)
+        
         # print(self.map.get_name())
         # Detect if player should enter the sanctuary
         if self.map.get_name() == "Spawn" and 180 < self.player.rect.x < 230 and 110 < self.player.rect.y < 130:
@@ -201,6 +200,7 @@ class App:
                         ], # Disallowed
                     [] # Danger
                 )
+            self.map.set_beneath(MapManager.spawn, 150, 230)
             self.on_map_change()
             self.player.rect.x = 200
             self.player.rect.y = 200
@@ -231,6 +231,11 @@ class App:
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
         # Detect if player should enter next zone at the bottom
+        if self.player.rect.y == 215 and self.map.get_beneath() and 155<self.player.rect.x<200 and self.map.get_name()=="Pokemon Sanctuary":
+            self.map = self.map.get_beneath()
+            self.on_map_change()
+            self.player.rect.y = 130
+            self.player.rect.x = 200
         if self.player.rect.y == 385 and self.map.get_beneath() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
             self.map = self.map.get_beneath()
             self.on_map_change()
