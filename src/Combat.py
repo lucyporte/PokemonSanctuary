@@ -9,10 +9,11 @@ class Combat():
     Controls the combat functionality in the game
     """
 
-    def __init__(self, surface, player, enemy):
+    def __init__(self, surface, player, enemy, manager):
         self.player = player
         self.enemy = enemy
         self.combat_surface = load_image("assets/images/battle_bg.png", 400, 500)
+        self.pokemon_manager = manager
         self.finished = False
         self.turn = 1
         self.screen = surface
@@ -111,11 +112,13 @@ class Combat():
             self.message3 = "(A)ttack or (D)efend?"
         elif self.player.hp <= 0:
             self.finished = True
+            self.player.dead = True
             db.update(self.enemy.data.get_id(), -1)
-            self.message1 = "The enemy wins!"
-            #self.message1 = f"{self.enemy.data.getName()} wins!"
+            self.message1 = f"{self.enemy.data.get_name()} wins!"
             self.dead = True
+
         elif self.enemy.hp <= 0:
             self.finished = True
+            self.pokemon_manager.save_pokemon(self.enemy)
             db.update(self.enemy.data.get_id(), 1)
             self.message1 = "The Trainer wins!"
