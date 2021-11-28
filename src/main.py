@@ -143,28 +143,28 @@ class App:
             self.pokemon.update()
 
         # Detect if player should enter next zone to the left
-        if self.player.rect.x == 0 and self.map.get_left():
+        if self.player.rect.x == 0 and self.map.get_left() and self.map.get_left_bounds()[0] < self.player.rect.y < self.map.get_left_bounds()[1]:
             self.map = self.map.get_left()
             self.on_map_change()
             self.player.rect.x = 390 - self.player.rect.x
         elif self.player.rect.x < 0:
             self.player.rect.x = 0
         # Detect if player should enter next zone to the right
-        if self.player.rect.x == 395 and self.map.get_right():
+        if self.player.rect.x == 395 and self.map.get_right() and self.map.get_right_bounds()[0] < self.player.rect.y < self.map.get_right_bounds()[1]:
             self.map = self.map.get_right()
             self.on_map_change()
             self.player.rect.x = 10
         elif self.player.rect.x > 395:
             self.player.rect.x = 395
         # Detect if player should enter next zone at the top
-        if self.player.rect.y == 0 and self.map.get_above():
+        if self.player.rect.y == 0 and self.map.get_above() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
             self.map = self.map.get_above()
             self.on_map_change()
             self.player.rect.y = 380
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
         # Detect if player should enter next zone at the bottom
-        if self.player.rect.y == 385 and self.map.get_beneath():
+        if self.player.rect.y == 385 and self.map.get_beneath() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
             self.map = self.map.get_beneath()
             self.on_map_change()
             self.player.rect.y = 10
