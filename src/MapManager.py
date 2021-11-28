@@ -221,7 +221,7 @@ def get_first_map():
 # Initialise all zones
 forest = Background(
     "Forest",
-    "assets/images/maps/forest.png",
+    "assets/images/maps/nuclear_forest.png",
     [
         [195, 155]
     ],
@@ -241,7 +241,7 @@ forest = Background(
 )
 spawn = Background(
     "Spawn",
-    "assets/images/maps/spawn.png",
+    "assets/images/maps/nuclear_spawn.png",
     [
         [155, 205],
         [155, 290],
@@ -257,7 +257,7 @@ spawn = Background(
 )
 city = Background(
     "City",
-    "assets/images/maps/city.png",
+    "assets/images/maps/nuclear_city.png",
     [
         [160, 110]
     ],
@@ -275,7 +275,7 @@ city = Background(
 )
 meadow = Background(
     "Meadow",
-    "assets/images/maps/meadow.png",
+    "assets/images/maps/nuclear_meadow.png",
     [
         [95, 255]
     ],
@@ -300,7 +300,7 @@ meadow = Background(
 )
 canyon = Background(
     "Canyon",
-    "assets/images/maps/canyon.png",
+    "assets/images/maps/nuclear_canyon.png",
     [
         [190, 220]
     ],
