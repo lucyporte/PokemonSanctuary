@@ -150,6 +150,7 @@ class App:
             # Kill player
             self.player_list.empty()
             self.player.dead = True
+            self.textbox.set_text("You died.")
 
         # Redraw Pokemon at their current position if they exist
         if self.pokemon_list:
@@ -245,7 +246,7 @@ class App:
         Defines what should happen in the game execution sequence
         """
         # Wait for intialisation before running program
-        if not self.on_init():
+        if self.on_init() is False:
             self._running = False
 
         # Start game loop
