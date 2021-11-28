@@ -5,76 +5,22 @@ from pygame.locals import *
 from Player import Player
 from Pokemon import Pokemon
 from TextBox import TextBox
-from tilemap import Map, Tile, TileWall, TileClickable
-from combat import Combat, Enemy
+from Combat import Combat
 import MapManager
 import PokemonManager
 import sys
-
-# if not pg.font:
-#     print("Warning, fonts disabled")
-# if not pg.mixer:
-#     print("Warning, sound disabled")
-
-tile1 = Tile("assets/images/tile1.png")
-tile2 = TileWall("assets/images/tile2.png")
-tile3 = TileClickable("assets/images/tile3.png", "Thanks for clicking!")
-
-map_grid_1  = [
-[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, None, tile1, tile1, tile3, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1],
-[tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile1, tile2, tile1, tile1, tile1, tile1, tile1, tile1, tile1]
-]
-
-myMap = Map(map_grid_1)
-
 
 class App:
     def __init__(self):
         self._running = True
         self._display_surf = None
         self._image_surf = None
-        self._map = myMap
         self.state = "exploring"
 
     def load_image(self, filename, x_cord, y_cord):
         image = pygame.image.load(filename).convert()
         image = pygame.transform.scale(image, (x_cord, y_cord))
         return image
-
-    def load_tile_image(self, filename, x_cord, y_cord, x_resize=16, y_resize=16):
-        image = pygame.image.load(filename).convert()
-        image = pygame.transform.scale(image, (x_resize, y_resize))
-        image.set_alpha(100)
-        self._display_surf.blit(image, (x_cord, y_cord))
-        #Fucky wucky
-        #self._display_surf.blit(image, (x_cord, y_cord))
-        return image
-
-    def load_map(self, map, resolution=16):
-        x = 0
-        y = 0
-        for t_row in map.tiles:
-            for t in t_row:
-                if t == None:
-                    x += resolution
-                    continue
-                self.load_tile_image(t.filepath, x, y)
-                x += resolution
-            y += resolution
-            x = 0
-
-    def get_tile_by_position(self, pos):
-        if pos[0] > len(self._map.tiles[0] * 16) or pos[1] > len(self._map.tiles * 16):
-            print("Clicking outside of map range")
-            return False
-        x_dex = pos[0] // 16
-        y_dex = pos[1] // 16
-        print(f"You clicked at ({x_dex}, {y_dex})")
-        return self._map.tiles[y_dex][x_dex]
 
     def on_init(self):
         # Open a window on the screen
@@ -111,15 +57,12 @@ class App:
             self._running = False
 
         if event.type == MOUSEBUTTONDOWN:
-            obj = self.get_tile_by_position(event.pos)
-            if isinstance(obj, TileWall):
-                pass
-                # print("This is a wall")
-            elif isinstance(obj, TileClickable):
-                print(obj.click_message)
-                self.state = "combat"
-                e = Enemy(20)
-                self.combat = Combat(self._display_surf, self.player, e)
+            if self.pokemon:
+                pokemonX = self.pokemon.rect.x
+                pokemonY = self.pokemon.rect.y
+                if pokemonX < event.pos[0] < pokemonX + 30 and pokemonY < event.pos[1] < pokemonY + 30:
+                    self.state = "combat"
+                    self.combat = Combat(self._display_surf, self.player, self.pokemon)                
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
@@ -204,7 +147,6 @@ class App:
             self._display_surf.blit(self._image_surf, (0, 0))
             self.player_list.draw(self._display_surf)  # draw player
             self.pokemon_list.draw(self._display_surf) # draw pokemon
-            self.load_map(self._map)
         elif self.state == "combat":
             if self.combat.finished:
                 pygame.time.wait(500)

@@ -16,6 +16,13 @@ class Pokemon(pygame.sprite.Sprite):
         self.velocityX = 0
         self.velocityY = 0
 
+        # Store Pokemon data
+        self.data = obj
+
+        # Set Pokemon health status
+        self.hp = 20
+        self.max_hp = 20
+
         # Set movement animation frames
         self.frame = 0
 
@@ -55,7 +62,7 @@ class Pokemon(pygame.sprite.Sprite):
         Update sprite position
         """
         # 1 in 20 chance of Pokemon moving around
-        randMove = randint(1, 20)
+        randMove = randint(1, 500)
         if randMove == 1:
             # Pick random direction
             randPoke = randint(0, 3)
