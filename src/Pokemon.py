@@ -13,8 +13,8 @@ class Pokemon(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Set X and Y velocities for Pokemon movement
-        self.velocityX = 0
-        self.velocityY = 0
+        self.velocity_x = 0
+        self.velocity_y = 0
 
         # Store Pokemon data
         self.data = obj
@@ -29,8 +29,8 @@ class Pokemon(pygame.sprite.Sprite):
         # Load Pokemon textures
         self.images = [0]*4
         ALPHA = (0, 0, 0)
-        for i, sprite in enumerate([obj.getDownWalkSprite(), obj.getLeftWalkSprite(), obj.getRightWalkSprite(), obj.getRightWalkSprite()]):
-            img = pygame.image.load(sprite.getFrame1().getPath()).convert()
+        for i, sprite in enumerate([obj.get_down_walk_sprite(), obj.get_left_walk_sprite(), obj.get_right_walk_sprite(), obj.get_right_walk_sprite()]):
+            img = pygame.image.load(sprite.get_frame_1().get_path()).convert()
             img.convert_alpha()     # optimise
             img.set_colorkey(ALPHA)
             self.images[i] = img
@@ -39,31 +39,31 @@ class Pokemon(pygame.sprite.Sprite):
         # Store Pokemon position
         self.rect = self.image.get_rect()
 
-    def setXVelocity(self, x):
+    def set_velocity_x(self, x):
         """
         Control Pokemon movement in the X direction
         -1 -> Move left
         0 -> No movement
         1 -> Move right
         """
-        self.velocityX = x
+        self.velocity_x = x
 
-    def setYVelocity(self, y):
+    def set_velocity_y(self, y):
         """
         Control Pokemon movement in the Y direction
         -1 -> Move left
         0 -> No movement
         1 -> Move right
         """
-        self.velocityY = y
+        self.velocity_y = y
 
     def update(self):
         """
         Update sprite position
         """
         # 1 in 20 chance of Pokemon moving around
-        randMove = randint(1, 500)
-        if randMove == 1:
+        rand_move = randint(1, 500)
+        if rand_move == 1:
             # Pick random direction
-            randPoke = randint(0, 3)
-            self.image = self.images[randPoke]
+            rand_poke = randint(0, 3)
+            self.image = self.images[rand_poke]

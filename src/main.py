@@ -46,11 +46,11 @@ class App:
         # Set up Pokemon
         self.pokemon = None
         self.pokemon_list = pygame.sprite.Group()
-        self.pokemon_manager = PokemonManager.getAll()
+        self.pokemon_manager = PokemonManager.get_all()
 
         # Set up map
-        self.map = MapManager.getFirstMap()
-        self.map_background = load_image(self.map.getImage(), 400, 400)
+        self.map = MapManager.get_first_map()
+        self.map_background = load_image(self.map.get_image(), 400, 400)
 
         # Control the game loop
         self._running = True
@@ -64,9 +64,9 @@ class App:
         if event.type == MOUSEBUTTONDOWN:
             # Check if a Pokemon has been clicked
             if self.pokemon:
-                pokemonX = self.pokemon.rect.x
-                pokemonY = self.pokemon.rect.y
-                if pokemonX < event.pos[0] < pokemonX + 30 and pokemonY < event.pos[1] < pokemonY + 30:
+                pokemon_x = self.pokemon.rect.x
+                pokemon_y = self.pokemon.rect.y
+                if pokemon_x < event.pos[0] < pokemon_x + 30 and pokemon_y < event.pos[1] < pokemon_y + 30:
                     # A Pokemon was clicked, so open the combat screen
                     self.state = "combat"
                     self.combat = Combat(self.screen, self.player, self.pokemon)
@@ -76,19 +76,19 @@ class App:
             # Detect left key or "a" key
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
                 # Move player left
-                self.player.setXVelocity(-1)
+                self.player.set_x_velocity(-1)
             # Detect right key or "d" key
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
                 # Move player right
-                self.player.setXVelocity(1)
+                self.player.set_x_velocity(1)
             # Detect up key or "w" key
             if event.key == pygame.K_UP or event.key == ord("w"):
                 # Move player up
-                self.player.setYVelocity(-1)
+                self.player.set_y_velocity(-1)
             # Detect down key or "s" key
             if event.key == pygame.K_DOWN or event.key == ord("s"):
                 # Move player down
-                self.player.setYVelocity(1)
+                self.player.set_y_velocity(1)
             # Redraw GUI
             pygame.display.flip()
 
@@ -102,11 +102,11 @@ class App:
             # Detect if the player was moving left or right
             if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
                 # Stop player moving left or right
-                self.player.setXVelocity(0)
+                self.player.set_x_velocity(0)
             # Detect if the player was moving up or down
             if event.key == pygame.K_UP or event.key == ord("w") or event.key == pygame.K_DOWN or event.key == ord("s"):
                 # Stop player moving up for down
-                self.player.setYVelocity(0)
+                self.player.set_y_velocity(0)
             # Detect if the "q" key was released
             if event.key == ord("q"):
                 # Quit the game
@@ -121,7 +121,7 @@ class App:
         self.player.update()
 
         # Detect if player has entered a disallowed region
-        if self.map.isDisallowedRegion(self.player.rect.x, self.player.rect.y):
+        if self.map.is_disallowed_region(self.player.rect.x, self.player.rect.y):
             # Prevent movement
             if self.player.velocityX == 1:
                 self.player.rect.x -= 1
@@ -133,7 +133,7 @@ class App:
                 self.player.rect.y += 1
 
         # Detect if player has entered a dangerous region
-        if self.map.isDangerRegion(self.player.rect.x, self.player.rect.y):
+        if self.map.is_danger_region(self.player.rect.x, self.player.rect.y):
             # Kill player
             self.player_list.empty()
             self.player.dead = True
@@ -143,29 +143,29 @@ class App:
             self.pokemon.update()
 
         # Detect if player should enter next zone to the left
-        if self.player.rect.x == 0 and self.map.getLeft():
-            self.map = self.map.getLeft()
+        if self.player.rect.x == 0 and self.map.get_left():
+            self.map = self.map.get_left()
             self.on_map_change()
             self.player.rect.x = 390 - self.player.rect.x
         elif self.player.rect.x < 0:
             self.player.rect.x = 0
         # Detect if player should enter next zone to the right
-        if self.player.rect.x == 395 and self.map.getRight():
-            self.map = self.map.getRight()
+        if self.player.rect.x == 395 and self.map.get_right():
+            self.map = self.map.get_right()
             self.on_map_change()
             self.player.rect.x = 10
         elif self.player.rect.x > 395:
             self.player.rect.x = 395
         # Detect if player should enter next zone at the top
-        if self.player.rect.y == 0 and self.map.getAbove():
-            self.map = self.map.getAbove()
+        if self.player.rect.y == 0 and self.map.get_above():
+            self.map = self.map.get_above()
             self.on_map_change()
             self.player.rect.y = 380
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
         # Detect if player should enter next zone at the bottom
-        if self.player.rect.y == 385 and self.map.getBeneath():
-            self.map = self.map.getBeneath()
+        if self.player.rect.y == 385 and self.map.get_beneath():
+            self.map = self.map.get_beneath()
             self.on_map_change()
             self.player.rect.y = 10
         elif self.player.rect.y > 385:
@@ -205,12 +205,12 @@ class App:
         Defines what actions should happen after the map zone changes
         """
         # Load new map image
-        self.map_background = load_image(self.map.getImage(), 400, 400)
+        self.map_background = load_image(self.map.get_image(), 400, 400)
         # Delete all Pokemon in previous zone
         self.pokemon_list.empty()
         # Spawn new Pokemon
-        new_pokemon = PokemonManager.getRandom()
-        coords = self.map.getRandomPokemonSpawn()
+        new_pokemon = PokemonManager.get_random()
+        coords = self.map.get_random_pokemon_spawn()
         self.pokemon = Pokemon(new_pokemon)
         self.pokemon.rect.x = coords[0]
         self.pokemon.rect.y = coords[1]

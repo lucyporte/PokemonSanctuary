@@ -14,37 +14,37 @@ class Pokemon():
         self._up = up
         self._down = down
 
-    def getID(self):
+    def get_id(self):
         """
         Get Pokemon internal ID
         """
         return self._id
 
-    def getName(self):
+    def get_name(self):
         """
         Get name of the Pokemon
         """
         return self._name
 
-    def getLeftWalkSprite(self):
+    def get_left_walk_sprite(self):
         """
         Get the sprites of this Pokemon when it faces to the left
         """
         return self._left
 
-    def getRightWalkSprite(self):
+    def get_right_walk_sprite(self):
         """
         Get the sprites of this Pokemon when it faces to the right
         """
         return self._right
 
-    def getUpWalkSprite(self):
+    def get_up_walk_sprite(self):
         """
         Get the sprites of this Pokemon when it faces away from the viewer
         """
         return self._up
 
-    def getDownWalkSprite(self):
+    def get_down_walk_sprite(self):
         """
         Get the sprites of this Pokemon when it faces towards from the viewer
         """
@@ -59,13 +59,13 @@ class PokemonWalkingAnimation():
         self._frame1 = frame1
         self._frame2 = frame2
 
-    def getFrame1(self):
+    def get_frame_1(self):
         """
         Get the first frame in the animation
         """
         return self._frame1
 
-    def getFrame2(self):
+    def get_frame_2(self):
         """
         Get the second frame in the animation
         """
@@ -81,37 +81,37 @@ class PokemonImage():
         self._width = width
         self._height = height
 
-    def getPath(self):
+    def get_path(self):
         """
         Get file path to image PNG
         """
         return self._path
 
-    def getWidth(self):
+    def get_width(self):
         """
         Get width of the image in pixels
         """
         return self._width
 
-    def getHeight(self):
+    def get_height(self):
         """
         Get height of the image in pixels
         """
         return self._height
 
 
-def getAll():
+def get_all():
     """
     Returns all Pokemon
     """
     return [pokemon1, pokemon2, pokemon3, pokemon4]
 
 
-def getRandom():
+def get_random():
     """
     Returns a random Pokemon
     """
-    return choice(getAll())
+    return choice(get_all())
 
 
 # Initialise all Pokemon

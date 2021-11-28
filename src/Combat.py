@@ -20,7 +20,7 @@ class Combat():
         Redraws combat GUI
         """
         # Enemy Sprite
-        screen.blit(load_image(self.enemy.data.getDownWalkSprite().getFrame1().getPath(), 125, 125), (50, 10))
+        screen.blit(load_image(self.enemy.data.get_down_walk_sprite().get_frame_1().get_path(), 125, 125), (50, 10))
         # Player HP
         screen.blit(render_text(f"{str(self.player.hp)}/{str(self.player.max_hp)}"), (100, 320))
         # Enemy HP
