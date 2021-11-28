@@ -1,6 +1,9 @@
 # Import Modules
 import pygame
 from pygame.locals import *
+import sys
+
+from utils import load_image
 
 from Player import Player
 from Pokemon import Pokemon
@@ -8,7 +11,6 @@ from TextBox import TextBox
 from Combat import Combat
 import MapManager
 import PokemonManager
-import sys
 
 class App:
     def __init__(self):
@@ -16,11 +18,6 @@ class App:
         self._display_surf = None
         self._image_surf = None
         self.state = "exploring"
-
-    def load_image(self, filename, x_cord, y_cord):
-        image = pygame.image.load(filename).convert()
-        image = pygame.transform.scale(image, (x_cord, y_cord))
-        return image
 
     def on_init(self):
         # Open a window on the screen
@@ -44,11 +41,11 @@ class App:
         self._running = True  # is game running
 
         # this is how you load a Surface object (i.e. an image)
-        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+        self._image_surf = load_image(self.map.getImage(), 400, 400)
         # this is how you resize an image
-        self._water_tile= self.load_image("assets/images/water_anim.png", 40, 40)
+        self._water_tile= load_image("assets/images/water_anim.png", 40, 40)
         # Load textbox image
-        self._tb= self.load_image("assets/images/menubox.png", 400, 100)
+        self._tb= load_image("assets/images/menubox.png", 400, 100)
         # Display the textbox
         self._display_surf.blit(self._tb,(0,400))
 
@@ -150,7 +147,7 @@ class App:
         elif self.state == "combat":
             if self.combat.finished:
                 pygame.time.wait(500)
-                self._tb= self.load_image("assets/images/menubox.png", 400, 100)
+                self._tb= load_image("assets/images/menubox.png", 400, 100)
                 self._display_surf.blit(self._tb,(0,400))
                 self.state = "exploring"
                 return
@@ -160,7 +157,7 @@ class App:
         # self.load_map(self._map)
 
     def on_map_change(self):
-        self._image_surf = self.load_image(self.map.getImage(), 400, 400)
+        self._image_surf = load_image(self.map.getImage(), 400, 400)
         self.pokemon_list.empty()
         new_pokemon = PokemonManager.getRandom()
         coords = self.map.getRandomPokemonSpawn()
