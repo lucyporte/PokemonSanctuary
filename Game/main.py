@@ -187,15 +187,15 @@ class App:
         if self.player.rect.y == 0 and self.map.getAbove() != None:
             self.map = self.map.getAbove()
             self.on_map_change()
-            self.player.rect.y = 385
+            self.player.rect.y = 380
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
         if self.player.rect.y == 385 and self.map.getBeneath() != None:
             self.map = self.map.getBeneath()
             self.on_map_change()
             self.player.rect.y = 10
-        elif self.player.rect.y > 395:
-            self.player.rect.y = 395
+        elif self.player.rect.y > 385:
+            self.player.rect.y = 385
 
     def on_render(self):
         # this loads an image onto the surface (you can also load images on top of images)
