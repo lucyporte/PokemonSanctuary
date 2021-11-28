@@ -62,7 +62,7 @@ class Pokemon(pygame.sprite.Sprite):
         Update sprite position
         """
         # 1 in 20 chance of Pokemon moving around
-        randMove = randint(1, 20)
+        randMove = randint(1, 500)
         if randMove == 1:
             # Pick random direction
             randPoke = randint(0, 3)
