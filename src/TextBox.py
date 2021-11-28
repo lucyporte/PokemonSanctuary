@@ -1,13 +1,21 @@
 import pygame
 
-from utils import render_text
+from utils import load_image, render_text
 
 
 class TextBox():
-    def set_text(self, screen, text, line=1):
+    def __init__(self, screen):
+        self.textbox_background = load_image("assets/images/menubox.png", 400, 100)
+        self.screen = screen
+        self.screen.blit(self.textbox_background, (0, 400))
+
+    def set_text(self, text, line=1):
         """
         Set the text displayed in the text box
         """
+        # Reset textbox each time
+        self.screen.blit(self.textbox_background, (0, 400))
+
         if line == 1:
             x, y = 25, 410
         elif line == 2:
@@ -19,5 +27,5 @@ class TextBox():
         elif line == 5:
             x, y, = 25, 470
 
-        screen.blit(render_text(text), (x, y))
+        self.screen.blit(render_text(text), (x, y))
         pygame.display.update()

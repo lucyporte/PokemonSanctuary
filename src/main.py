@@ -30,9 +30,7 @@ class App:
         self.screen = pygame.display.set_mode([400, 500])
 
         # Generate textbox
-        self.textbox = TextBox()
-        self.textbox_background = load_image("assets/images/menubox.png", 400, 100)
-        self.screen.blit(self.textbox_background, (0, 400))
+        self.textbox = TextBox(self.screen)
 
         # Generate player
         self.player = Player()
@@ -62,6 +60,15 @@ class App:
 
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
+            # Check if an interesting region has been clicked
+            is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
+            if is_interesting_region:
+                # Display information in text box
+                self.textbox.set_text(is_interesting_region)
+            else:
+                # Clear information in text box
+                self.textbox.set_text("")
+
             # Check if a Pokemon has been clicked
             if self.pokemon:
                 pokemon_x = self.pokemon.rect.x
@@ -188,8 +195,7 @@ class App:
                 # Wait 2 seconds after end of combat to change states
                 pygame.time.wait(2000)
                 # Reset textbox after combat
-                self.textbox_background = load_image("assets/images/menubox.png", 400, 100)
-                self.screen.blit(self.textbox_background, (0, 400))
+                self.textbox = TextBox(self.screen)
                 # Change state to exploring
                 self.state = "exploring"
                 return
