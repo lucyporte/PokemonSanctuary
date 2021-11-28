@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
 
         # Load player textures
         for i in range(1, 7):
-            img = pygame.image.load('Player/player_' + str(i) + '.png').convert()
+            img = pygame.image.load('assets/images/player/player_' + str(i) + '.png').convert()
 
             # Prevent solid tecture background
             # TODO: Requires optimisation
