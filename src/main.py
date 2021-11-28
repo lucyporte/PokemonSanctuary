@@ -9,8 +9,8 @@ from Player import Player
 from Pokemon import Pokemon
 from TextBox import TextBox
 from Combat import Combat
+from PokemonManager import PokemonManager
 import MapManager
-import PokemonManager
 import db
 
 
@@ -51,7 +51,7 @@ class App:
         # Set up Pokemon
         self.pokemon = None
         self.pokemon_list = pygame.sprite.Group()
-        self.pokemon_manager = PokemonManager.get_all()
+        self.pokemon_manager = PokemonManager()
 
         # Set up map
         self.map = MapManager.get_first_map()
@@ -73,7 +73,6 @@ class App:
 
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
-            print(event.pos)
             # Check if an interesting region has been clicked
             is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
             if is_interesting_region:
@@ -90,7 +89,7 @@ class App:
                 if pokemon_x < event.pos[0] < pokemon_x + 30 and pokemon_y < event.pos[1] < pokemon_y + 30:
                     # A Pokemon was clicked, so open the combat screen
                     self.state = "combat"
-                    self.combat = Combat(self.screen, self.player, self.pokemon)
+                    self.combat = Combat(self.screen, self.player, self.pokemon, self.pokemon_manager)
                     # Remove the Pokemon
                     self.pokemon = None
                     self.pokemon_list.empty()
@@ -169,14 +168,8 @@ class App:
         # Detect if player has entered a dangerous region
         if self.map.is_danger_region(self.player.rect.x, self.player.rect.y):
             # Kill player
-            self.player_list.empty()
             self.player.dead = True
-            pygame.mixer.music.pause()
-            self.on_render()
-            self.textbox.set_text("You died.")
-            # Respawn after 5 seconds
-            pygame.time.delay(5000)
-            self.on_init()
+        self.on_player_death()
 
         # Redraw Pokemon at their current position if they exist
         if self.pokemon_list:
@@ -262,19 +255,33 @@ class App:
         self.pokemon_list.empty()
         # Possibly spawn new Pokemon
         if randint(0, 4) == 0:
-            new_pokemon = PokemonManager.get_random()
-            coords = self.map.get_random_pokemon_spawn()
-            self.pokemon = Pokemon(new_pokemon)
-            self.pokemon.rect.x = coords[0]
-            self.pokemon.rect.y = coords[1]
-            self.pokemon_list.add(self.pokemon)
-            # Display text message
-            analyse = db.analyse(self.pokemon.data.get_id())
-            self.textbox.set_text(analyse[0])
-            self.textbox.set_text(analyse[1], 2)
-            self.textbox.set_text(analyse[2], 3)
+            new_pokemon = self.pokemon_manager.get_random_available_pokemon()
+            if new_pokemon:
+                coords = self.map.get_random_pokemon_spawn()
+                self.pokemon = Pokemon(new_pokemon)
+                self.pokemon.rect.x = coords[0]
+                self.pokemon.rect.y = coords[1]
+                self.pokemon_list.add(self.pokemon)
+                # Display text message
+                analyse = db.analyse(self.pokemon.data.get_id())
+                self.textbox.set_text(analyse[0])
+                self.textbox.set_text(analyse[1], 2)
+                self.textbox.set_text(analyse[2], 3)
         else:
             self.textbox.set_text("")
+
+    def on_player_death(self):
+        """
+        Handle a player death
+        """
+        if self.player.dead:
+            self.player_list.empty()
+            pygame.mixer.music.pause()
+            self.on_render()
+            self.textbox.set_text("You died.")
+            # Respawn after 5 seconds
+            pygame.time.delay(5000)
+            self.on_init()
 
     def on_cleanup(self):
         """
