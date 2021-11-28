@@ -250,6 +250,7 @@ class App:
                 self.textbox.set_text("Welcome to Pokemon Sanctuary")
                 # Change state back to exploring
                 self.state = "exploring"
+                return
             # Draw start background
             self.screen.blit(self.start.start_surface, (0, 0))
             self.textbox.set_text("Press Anything to Start")
