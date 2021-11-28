@@ -5,7 +5,7 @@ from pygame.locals import *
 from Player import Player
 from Pokemon import Pokemon
 from TextBox import TextBox
-from combat import Combat, Enemy
+from Combat import Combat
 import MapManager
 import PokemonManager
 import sys
@@ -62,16 +62,7 @@ class App:
                 pokemonY = self.pokemon.rect.y
                 if pokemonX < event.pos[0] < pokemonX + 30 and pokemonY < event.pos[1] < pokemonY + 30:
                     self.state = "combat"
-                    e = Enemy(20)
-                    self.combat = Combat(self._display_surf, self.player, e)
-
-            obj = self.get_tile_by_position(event.pos)
-            if isinstance(obj, TileWall):
-                pass
-                # print("This is a wall")
-            elif isinstance(obj, TileClickable):
-                print(obj.click_message)
-                
+                    self.combat = Combat(self._display_surf, self.player, self.pokemon)                
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):

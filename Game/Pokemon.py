@@ -16,6 +16,13 @@ class Pokemon(pygame.sprite.Sprite):
         self.velocityX = 0
         self.velocityY = 0
 
+        # Store Pokemon data
+        self.data = obj
+
+        # Set Pokemon health status
+        self.hp = 20
+        self.max_hp = 20
+
         # Set movement animation frames
         self.frame = 0
 

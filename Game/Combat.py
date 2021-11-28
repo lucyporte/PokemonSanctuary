@@ -1,12 +1,5 @@
 import pygame, random
 
-class Enemy():
-
-    def __init__(self, hp):
-        self.hp = hp
-        self.max_hp = hp
-
-
 class Combat():
 
     def load_image(self, filename, x_cord, y_cord):
@@ -22,6 +15,8 @@ class Combat():
 
 
     def update_combat(self, screen):
+        enemyImage = pygame.image.load(self.enemy.data.getDownWalkSprite().getFrame1().getPath())
+        screen.blit(pygame.transform.scale(enemyImage, (125, 125)), (50, 25))
         screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.player.hp)}/{str(self.player.max_hp)}" , True, (0, 0, 0)), (100, 320))
         screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.enemy.hp)}/{str(self.enemy.max_hp)}", True, (0, 0, 0)), (260, 60))
         screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), self.combat_text(), True, (0, 0, 0)), (40, 400))
@@ -41,7 +36,7 @@ class Combat():
             return "Mash Space to see who wins!!"
         elif self.player.hp <= 0:
             self.finished = True
-            return "The Pokemon wins!"
+            return f"{self.enemy.data.getName()} wins!"
         elif self.enemy.hp <= 0:
             self.finished = True
             return "The Trainer wins!"
