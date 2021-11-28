@@ -64,48 +64,48 @@ pokemon1 = Pokemon(
     "Chesspin",
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/1/left1.png",
+            "assets/images/pokemon/1/left1.png",
             18,
             18
         ),
         PokemonImage(
-            "Game/assets/pokemon/1/left2.png",
-            18,
-            18
-        )
-    ),
-    PokemonWalkingAnimation(
-        PokemonImage(
-            "Game/assets/pokemon/1/right1.png",
-            18,
-            18
-        ),
-        PokemonImage(
-            "Game/assets/pokemon/1/right2.png",
+            "assets/images/pokemon/1/left2.png",
             18,
             18
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/1/away1.png",
+            "assets/images/pokemon/1/right1.png",
+            18,
+            18
+        ),
+        PokemonImage(
+            "assets/images/pokemon/1/right2.png",
+            18,
+            18
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/1/away1.png",
             21,
             19
         ),
         PokemonImage(
-            "Game/assets/pokemon/1/away2.png",
+            "assets/images/pokemon/1/away2.png",
             21,
             19
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/1/towards1.png",
+            "assets/images/pokemon/1/towards1.png",
             21,
             19
         ),
         PokemonImage(
-            "Game/assets/pokemon/1/towards2.png",
+            "assets/images/pokemon/1/towards2.png",
             21,
             19
         )
@@ -117,48 +117,48 @@ pokemon2 = Pokemon(
     "Butterfly",
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/2/left1.png",
+            "assets/images/pokemon/2/left1.png",
             23,
             23
         ),
         PokemonImage(
-            "Game/assets/pokemon/2/left2.png",
+            "assets/images/pokemon/2/left2.png",
             26,
             22
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/2/right1.png",
+            "assets/images/pokemon/2/right1.png",
             26,
             23
         ),
         PokemonImage(
-            "Game/assets/pokemon/2/right2.png",
+            "assets/images/pokemon/2/right2.png",
             26,
             22
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/2/away1.png",
+            "assets/images/pokemon/2/away1.png",
             28,
             22
         ),
         PokemonImage(
-            "Game/assets/pokemon/2/away2.png",
+            "assets/images/pokemon/2/away2.png",
             26,
             23
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "Game/assets/pokemon/2/towards1.png",
+            "assets/images/pokemon/2/towards1.png",
             26,
             23
         ),
         PokemonImage(
-            "Game/assets/pokemon/2/towards2.png",
+            "assets/images/pokemon/2/towards2.png",
             28,
             22
         )
@@ -170,48 +170,48 @@ pokemon3 = Pokemon(
     "Comrade Dragon",
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/3/left1.png",
+            "assets/images/pokemon/3/left1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/3/left2.png",
+            "assets/images/pokemon/3/left2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/3/right1.png",
+            "assets/images/pokemon/3/right1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/3/right2.png",
+            "assets/images/pokemon/3/right2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/3/away1.png",
+            "assets/images/pokemon/3/away1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/3/away2.png",
+            "assets/images/pokemon/3/away2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/3/towards1.png",
+            "assets/images/pokemon/3/towards1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/3/towards2.png",
+            "assets/images/pokemon/3/towards2.png",
             32,
             32
         )
@@ -223,48 +223,48 @@ pokemon4 = Pokemon(
     "Miss Comrade",
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/4/left1.png",
+            "assets/images/pokemon/4/left1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/4/left2.png",
+            "assets/images/pokemon/4/left2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/4/right1.png",
+            "assets/images/pokemon/4/right1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/4/right2.png",
+            "assets/images/pokemon/4/right2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/4/away1.png",
+            "assets/images/pokemon/4/away1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/4/away2.png",
+            "assets/images/pokemon/4/away2.png",
             32,
             32
         )
     ),
     PokemonWalkingAnimation(
         PokemonImage(
-            "assets/pokemon/4/towards1.png",
+            "assets/images/pokemon/4/towards1.png",
             32,
             32
         ),
         PokemonImage(
-            "assets/pokemon/4/towards2.png",
+            "assets/images/pokemon/4/towards2.png",
             32,
             32
         )

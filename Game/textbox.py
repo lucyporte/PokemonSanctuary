@@ -10,5 +10,5 @@ class Text():
         elif line == "line3": x, y, = 25, 440
         elif line == "line4": x, y, = 25, 455
         elif line == "line5": x, y, = 25, 470
-        screen.blit(font.Font.render(font.Font("smallest_pixel-7.ttf", 16), text, True, (0, 0, 0)), (x, y))
+        screen.blit(font.Font.render(font.Font("assets/fonts/smallest_pixel-7.ttf", 16), text, True, (0, 0, 0)), (x, y))
         pygame.display.update()
