@@ -59,4 +59,4 @@ class player(pygame.sprite.Sprite):
             self.frame += 1
             if self.frame > 7:
                 self.frame = 0
-                self.image = self.images[self.frame // 4]
+            self.image = self.images[self.frame // 4]
