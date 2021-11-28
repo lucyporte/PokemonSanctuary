@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
 
         # Set movement animation frames
         self.frame = 0
+        self.movement = 0
         self.images = []
 
         # Set player health and death status
@@ -62,33 +63,40 @@ class Player(pygame.sprite.Sprite):
         """
         Update sprite position
         """
-        # Determine new sprite position
-        self.rect.x = self.rect.x + self.velocityX
-        self.rect.y = self.rect.y + self.velocityY
+        # Only move every 20th frame
+        if self.movement == 0:
+            # Determine new sprite position
+            self.rect.x = self.rect.x + self.velocityX
+            self.rect.y = self.rect.y + self.velocityY
 
-        # Player moving up
-        if self.velocityY < 0:
-            # Animate movement
-            self.frame += 1
-            if self.frame > 7:
-                self.frame = 0
-            # Use sprites where player is facing away
-            self.image = self.images[self.frame // 4 + 4]
+            # Player moving up
+            if self.velocityY < 0:
+                # Animate movement
+                self.frame += 1
+                if self.frame > 7:
+                    self.frame = 0
+                # Use sprites where player is facing away
+                self.image = self.images[self.frame // 4 + 4]
 
-        # Player moving left
-        elif self.velocityX < 0:
-            # Animate movement
-            self.frame += 1
-            if self.frame > 7:
-                self.frame = 0
-            # Use sprites where player is facing to the left
-            self.image = self.images[self.frame // 4 + 2]
+            # Player moving left
+            elif self.velocityX < 0:
+                # Animate movement
+                self.frame += 1
+                if self.frame > 7:
+                    self.frame = 0
+                # Use sprites where player is facing to the left
+                self.image = self.images[self.frame // 4 + 2]
 
-        # Player moving down or right
-        elif self.velocityX > 0 or self.velocityY > 0:
-            # Animate movement
-            self.frame += 1
-            if self.frame > 7:
-                self.frame = 0
-            # Use sprites where player is facing to the left
-            self.image = self.images[self.frame // 4]
+            # Player moving down or right
+            elif self.velocityX > 0 or self.velocityY > 0:
+                # Animate movement
+                self.frame += 1
+                if self.frame > 7:
+                    self.frame = 0
+                # Use sprites where player is facing to the left
+                self.image = self.images[self.frame // 4]
+        
+        # Update Counter
+        self.movement += 1
+        if self.movement > 19:
+            self.movement = 0
