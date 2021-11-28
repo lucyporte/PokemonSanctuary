@@ -123,6 +123,11 @@ class App:
 
         # Handle a keypress ending
         if event.type == pygame.KEYUP:
+            if self.state == "combat":
+                if event.key == ord("a"):
+                    self.combat.player_attack("attack")
+                elif event.key == ord("d"):
+                    self.combat.player_attack("defend")
             # Detect if the player was moving left or right
             if event.key == pygame.K_LEFT or event.key == ord("a") or event.key == pygame.K_RIGHT or event.key == ord("d"):
                 # Stop player moving left or right
@@ -239,11 +244,13 @@ class App:
                 self.textbox = TextBox(self.screen)
                 # Change state to exploring
                 self.state = "exploring"
+                if self.combat.dead:
+                    self.player.dead = True
                 return
             # Draw combat background
             self.screen.blit(self.combat.combat_surface, (0, 0))
             # Run combat
-            self.combat.update_combat(self.screen)
+            self.combat.update_combat()
 
         # Draw mouse custom cursor
         if pygame.mouse.get_pos()[1] < 385:
