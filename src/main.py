@@ -53,6 +53,12 @@ class App:
         # Control the game loop
         self._running = True
 
+        # Hide default mouse cursor
+        pygame.mouse.set_visible(False)
+
+        # Initialise custom cursor
+        self.cursor = load_image("assets/images/cursor.png", 20, 20)
+
     def on_event(self, event):
         # Closing the window (with the X) ends the game
         if event.type == QUIT:
@@ -203,6 +209,11 @@ class App:
             self.screen.blit(self.combat.combat_surface, (0, 0))
             # Run combat
             self.combat.update_combat(self.screen)
+
+        # Draw mouse custom cursor
+        if pygame.mouse.get_pos()[1] < 385:
+            self.screen.blit(self.cursor, pygame.mouse.get_pos())
+
         # Redraw GUI
         pygame.display.flip()
 
