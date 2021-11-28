@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys
 from random import randint
+from MapManager import Background
 
 from utils import load_image
 
@@ -193,6 +194,33 @@ class App:
             self.player.dead = True
         self.on_player_death()
 
+        
+        # print(self.map.get_name())
+        # Detect if player should enter the sanctuary
+        if self.map.get_name() == "Spawn" and 180 < self.player.rect.x < 230 and 110 < self.player.rect.y < 130:
+            # print("Nppp")
+            # input()
+            self.map = Background(
+                    "Pokemon Sanctuary",
+                    "assets/images/maps/sanctuary.png",
+                    [
+                        [70, 100],
+                        [95, 135], # Pokemon spawns - chairs?
+                        [120, 120],
+                        []
+
+                    ],
+                    [], # Interesting
+                    [   [50, 0, 350, 0],
+                        [350, 300, 50, 0]
+                        ], # Disallowed
+                    [] # Danger
+                )
+            self.map.set_beneath(MapManager.spawn, 150, 230)
+            self.on_map_change()
+            self.player.rect.x = 200
+            self.player.rect.y = 200
+
         # Redraw Pokemon at their current position if they exist
         if self.pokemon_list:
             self.pokemon.update()
@@ -225,6 +253,11 @@ class App:
             if self.map.get_above_bounds() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
                 self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone at the bottom
+        if self.player.rect.y == 215 and self.map.get_beneath() and 155<self.player.rect.x<200 and self.map.get_name()=="Pokemon Sanctuary":
+            self.map = self.map.get_beneath()
+            self.on_map_change()
+            self.player.rect.y = 130
+            self.player.rect.x = 200
         if self.player.rect.y == 385 and self.map.get_beneath() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
             self.map = self.map.get_beneath()
             self.on_map_change()
