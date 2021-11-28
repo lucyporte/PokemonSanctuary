@@ -26,6 +26,10 @@ class App:
         # Initialise module
         pygame.init()
 
+        # Initialise sound module
+        pygame.mixer.music.load("assets/audio/background.mp3")
+        pygame.mixer.music.play(-1)
+
         # Set window width and height
         self.screen = pygame.display.set_mode([400, 500])
 
