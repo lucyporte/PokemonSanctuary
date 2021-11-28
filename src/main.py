@@ -9,6 +9,7 @@ from Player import Player
 from Pokemon import Pokemon
 from TextBox import TextBox
 from Combat import Combat
+from Start import Start
 from PokemonManager import PokemonManager
 import MapManager
 import db
@@ -19,7 +20,7 @@ class App:
         self._running = True
         self.screen = None
         self.map_background = None
-        self.state = "exploring"
+        self.state = "start"
 
     def on_init(self):
         """
@@ -35,6 +36,9 @@ class App:
 
         # Set window width and height
         self.screen = pygame.display.set_mode([400, 500])
+
+        # Generate start object
+        self.start = Start(self.screen)
 
         # Generate textbox
         self.textbox = TextBox(self.screen)
@@ -71,6 +75,11 @@ class App:
         # Closing the window (with the X) ends the game
         if event.type == QUIT:
             self._running = False
+
+        if self.state == "start":
+            if event.type == KEYDOWN:
+                self.start.finished = True
+                self.textbox = TextBox(self.screen)
 
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
@@ -245,6 +254,16 @@ class App:
             self.screen.blit(self.combat.combat_surface, (0, 0))
             # Run combat
             self.combat.update_combat(self.screen)
+        elif self.state == "start":
+            if self.start.finished:
+                self.textbox = TextBox(self.screen)
+                self.textbox.set_text("Welcome to Pokemon Sanctuary")
+                # Change state back to exploring
+                self.state = "exploring"
+                return
+            # Draw start background
+            self.screen.blit(self.start.start_surface, (0, 0))
+            self.textbox.set_text("Press Anything to Start")
 
         # Draw mouse custom cursor
         if pygame.mouse.get_pos()[1] < 385:
