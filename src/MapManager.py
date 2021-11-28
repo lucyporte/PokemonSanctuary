@@ -11,43 +11,48 @@ class Background():
         self._image = image
         self._pokemonSpawns = pokemonSpawns
         self._left = None
+        self._left_bounds = None
         self._right = None
+        self._right_bounds = None
         self._beneath = None
+        self._beneath_bounds = None
         self._above = None
+        self._above_bounds = None
         self._disallowedRegions = disallowedRegions
         self._dangerRegions = dangerRegions
 
-    def getName(self):
+    def get_name(self):
         """
         Get zone name
         """
         return self._name
 
-    def getImage(self):
+    def get_image(self):
         """
         Get file path to image PNG
         """
         return self._image
 
-    def getAllPokemonSpawns(self):
+    def get_all_pokemon_spawns(self):
         """
         Get all coordinates deemed suitable for Pokemon spawns
         """
         return self._pokemonSpawns
 
-    def getRandomPokemonSpawn(self):
+    def get_random_pokemon_spawn(self):
         """
         Get a random set of coordinates deemed suitable for Pokemon spawns
         """
-        return choice(self.getAllPokemonSpawns())
+        return choice(self.get_all_pokemon_spawns())
 
-    def setLeft(self, left):
+    def set_left(self, left, lower, upper):
         """
         Set the zone which should appear when a player exits this zone to the left
         """
         self._left = left
+        self._left_bounds = (lower, upper)
 
-    def getLeft(self):
+    def get_left(self):
         """
         Get the zone which will appear when a player exits this zone to the left
 
@@ -55,13 +60,22 @@ class Background():
         """
         return self._left
 
-    def setRight(self, right):
+    def get_left_bounds(self):
+        """
+        Get the region where a user can proceed to the next zone on the left
+
+        Returns None if no zone is set
+        """
+        return self._left_bounds
+
+    def set_right(self, right, lower, upper):
         """
         Set the zone which should appear when a player exits this zone to the right
         """
         self._right = right
+        self._right_bounds = (lower, upper)
 
-    def getRight(self):
+    def get_right(self):
         """
         Get the zone which will appear when a player exits this zone to the right
 
@@ -69,13 +83,22 @@ class Background():
         """
         return self._right
 
-    def setBeneath(self, beneath):
+    def get_right_bounds(self):
+        """
+        Get the region where a user can proceed to the next zone on the right
+
+        Returns None if no zone is set
+        """
+        return self._right_bounds
+
+    def set_beneath(self, beneath, lower, upper):
         """
         Set the zone which should appear when a player exits this zone at the bottom
         """
         self._beneath = beneath
+        self._beneath_bounds = (lower, upper)
 
-    def getBeneath(self):
+    def get_beneath(self):
         """
         Get the zone which will appear when a player exits this zone at the bottom
 
@@ -83,13 +106,22 @@ class Background():
         """
         return self._beneath
 
-    def setAbove(self, above):
+    def get_beneath_bounds(self):
+        """
+        Get the region where a user can proceed to the next zone at the bottom
+
+        Returns None if no zone is set
+        """
+        return self._beneath_bounds
+
+    def set_above(self, above, lower, upper):
         """
         Set the zone which should appear when a player exits this zone at the top
         """
         self._above = above
+        self._above_bounds = (lower, upper)
 
-    def getAbove(self):
+    def get_above(self):
         """
         Get the zone which will appear when a player exits this zone at the top
 
@@ -97,7 +129,15 @@ class Background():
         """
         return self._above
 
-    def isDisallowedRegion(self, x, y):
+    def get_above_bounds(self):
+        """
+        Get the region where a user can proceed to the next zone at the top
+
+        Returns None if no zone is set
+        """
+        return self._above_bounds
+
+    def is_disallowed_region(self, x, y):
         """
         Checks if a player has entered a disallowed region of this zone
 
@@ -108,7 +148,7 @@ class Background():
                 return True
         return False
 
-    def isDangerRegion(self, x, y):
+    def is_danger_region(self, x, y):
         """
         Checks if a player has entered a dangerous region of this zone
 
@@ -120,14 +160,14 @@ class Background():
         return False
 
 
-def getMaps():
+def get_maps():
     """
     Returns all zones which make up the map
     """
     return [forest, spawn, city, meadow, canyon]
 
 
-def getFirstMap():
+def get_first_map():
     """
     Returns the spawn zone
     """
@@ -233,17 +273,17 @@ canyon = Background(
     ]
 )
 
-forest.setRight(spawn)
-forest.setBeneath(meadow)
+forest.set_right(spawn, 235, 275)
+forest.set_beneath(meadow, 95, 135)
 
-spawn.setLeft(forest)
-spawn.setBeneath(canyon)
-spawn.setRight(city)
+spawn.set_left(forest, 235, 275)
+spawn.set_beneath(canyon, 190, 230)
+spawn.set_right(city, 235, 275)
 
-city.setLeft(spawn)
+city.set_left(spawn, 235, 275)
 
-meadow.setAbove(forest)
-meadow.setRight(canyon)
+meadow.set_above(forest, 95, 135)
+meadow.set_right(canyon, 235, 275)
 
-canyon.setLeft(meadow)
-canyon.setAbove(spawn)
+canyon.set_left(meadow, 235, 275)
+canyon.set_above(spawn, 190, 230)

@@ -12,8 +12,8 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         # Set X and Y velocities for player movement
-        self.velocityX = 0
-        self.velocityY = 0
+        self.velocity_x = 0
+        self.velocity_y = 0
 
         # Set movement animation frames
         self.frame = 0
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
 
         # Load player textures
         for i in range(1, 7):
-            img = pygame.image.load('Player/player_' + str(i) + '.png').convert()
+            img = pygame.image.load('assets/images/player/player_' + str(i) + '.png').convert()
 
             # Prevent solid tecture background
             # TODO: Requires optimisation
@@ -41,23 +41,23 @@ class Player(pygame.sprite.Sprite):
         # Store player position
         self.rect = self.image.get_rect()
 
-    def setXVelocity(self, x):
+    def set_x_velocity(self, x):
         """
         Control player movement in the X direction
         -1 -> Move left
         0 -> No movement
         1 -> Move right
         """
-        self.velocityX = x
+        self.velocity_x = x
 
-    def setYVelocity(self, y):
+    def set_y_velocity(self, y):
         """
         Control player movement in the Y direction
         -1 -> Move left
         0 -> No movement
         1 -> Move right
         """
-        self.velocityY = y
+        self.velocity_y = y
 
     def update(self):
         """
@@ -66,11 +66,11 @@ class Player(pygame.sprite.Sprite):
         # Only move every 20th frame
         if self.movement == 0:
             # Determine new sprite position
-            self.rect.x = self.rect.x + self.velocityX
-            self.rect.y = self.rect.y + self.velocityY
+            self.rect.x = self.rect.x + self.velocity_x
+            self.rect.y = self.rect.y + self.velocity_y
 
             # Player moving up
-            if self.velocityY < 0:
+            if self.velocity_y < 0:
                 # Animate movement
                 self.frame += 1
                 if self.frame > 7:
@@ -79,7 +79,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.images[self.frame // 4 + 4]
 
             # Player moving left
-            elif self.velocityX < 0:
+            elif self.velocity_x < 0:
                 # Animate movement
                 self.frame += 1
                 if self.frame > 7:
@@ -88,7 +88,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = self.images[self.frame // 4 + 2]
 
             # Player moving down or right
-            elif self.velocityX > 0 or self.velocityY > 0:
+            elif self.velocity_x > 0 or self.velocity_y > 0:
                 # Animate movement
                 self.frame += 1
                 if self.frame > 7:
