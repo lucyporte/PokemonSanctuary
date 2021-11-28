@@ -97,7 +97,6 @@ class App:
             else:
                 # Clear information in text box
                 self.textbox.set_text("")
-            print(pygame.mouse.get_pos())
 
             # Check if a Pokemon has been clicked
             if self.pokemon:
@@ -132,11 +131,6 @@ class App:
                 self.player.set_y_velocity(steps)
             # Redraw GUI
             pygame.display.flip()
-
-            # Detect spacebar being pressed in combat mode
-            if pygame.key.get_pressed()[pygame.K_SPACE] and self.state == "combat":
-                # Make turn in combat
-                self.combat.take_turn()
 
         # Handle a keypress ending
         if event.type == pygame.KEYUP:
