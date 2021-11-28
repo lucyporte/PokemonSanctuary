@@ -83,6 +83,9 @@ class App:
                     # A Pokemon was clicked, so open the combat screen
                     self.state = "combat"
                     self.combat = Combat(self.screen, self.player, self.pokemon)
+                    # Remove the Pokemon
+                    self.pokemon = None
+                    self.pokemon_list.empty()
 
         # Handle a keypress starting
         if event.type == pygame.KEYDOWN:
