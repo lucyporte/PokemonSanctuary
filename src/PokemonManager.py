@@ -104,7 +104,17 @@ def get_all():
     """
     Returns all Pokemon
     """
-    return [pokemon1, pokemon2, pokemon3, pokemon4]
+    return [
+        pokemon1,
+        pokemon2,
+        pokemon3,
+        pokemon4,
+        pokemon5,
+        pokemon6,
+        pokemon7,
+        pokemon8,
+        pokemon9
+    ]
 
 
 def get_random():
@@ -323,6 +333,271 @@ pokemon4 = Pokemon(
             "assets/images/pokemon/4/towards2.png",
             32,
             32
+        )
+    )
+)
+
+pokemon5 = Pokemon(
+    "5",
+    "Pokemon 5",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/5/left1.png",
+            16,
+            21
+        ),
+        PokemonImage(
+            "assets/images/pokemon/5/left2.png",
+            16,
+            21
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/5/right1.png",
+            16,
+            21
+        ),
+        PokemonImage(
+            "assets/images/pokemon/5/right2.png",
+            16,
+            21
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/5/away1.png",
+            21,
+            21
+        ),
+        PokemonImage(
+            "assets/images/pokemon/5/away2.png",
+            21,
+            21
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/5/towards1.png",
+            21,
+            21
+        ),
+        PokemonImage(
+            "assets/images/pokemon/5/towards2.png",
+            32,
+            21
+        )
+    )
+)
+
+pokemon6 = Pokemon(
+    "6",
+    "Pokemon 6",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/6/left1.png",
+            25,
+            22
+        ),
+        PokemonImage(
+            "assets/images/pokemon/6/left2.png",
+            26,
+            22
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/6/right1.png",
+            25,
+            22
+        ),
+        PokemonImage(
+            "assets/images/pokemon/6/right2.png",
+            26,
+            22
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/6/away1.png",
+            15,
+            25
+        ),
+        PokemonImage(
+            "assets/images/pokemon/6/away2.png",
+            15,
+            25
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/6/towards1.png",
+            15,
+            23
+        ),
+        PokemonImage(
+            "assets/images/pokemon/6/towards2.png",
+            15,
+            23
+        )
+    )
+)
+
+pokemon7 = Pokemon(
+    "7",
+    "Pokemon 7",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/7/left1.png",
+            28,
+            26
+        ),
+        PokemonImage(
+            "assets/images/pokemon/7/left2.png",
+            26,
+            26
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/7/right1.png",
+            24,
+            26
+        ),
+        PokemonImage(
+            "assets/images/pokemon/7/right2.png",
+            23,
+            26
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/7/away1.png",
+            28,
+            26
+        ),
+        PokemonImage(
+            "assets/images/pokemon/7/away2.png",
+            26,
+            26
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/7/towards1.png",
+            28,
+            26
+        ),
+        PokemonImage(
+            "assets/images/pokemon/7/towards2.png",
+            26,
+            26
+        )
+    )
+)
+
+pokemon8 = Pokemon(
+    "8",
+    "Pokemon 8",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/8/left1.png",
+            18,
+            18
+        ),
+        PokemonImage(
+            "assets/images/pokemon/8/left2.png",
+            12,
+            21
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/8/right1.png",
+            18,
+            18
+        ),
+        PokemonImage(
+            "assets/images/pokemon/8/right2.png",
+            12,
+            21
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/8/away1.png",
+            23,
+            18
+        ),
+        PokemonImage(
+            "assets/images/pokemon/8/away2.png",
+            17,
+            20
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/8/towards1.png",
+            23,
+            18
+        ),
+        PokemonImage(
+            "assets/images/pokemon/8/towards2.png",
+            17,
+            20
+        )
+    )
+)
+
+pokemon9 = Pokemon(
+    "9",
+    "Pokemon 9",
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/9/left1.png",
+            25,
+            24
+        ),
+        PokemonImage(
+            "assets/images/pokemon/9/left2.png",
+            25,
+            24
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/9/right1.png",
+            25,
+            24
+        ),
+        PokemonImage(
+            "assets/images/pokemon/9/right2.png",
+            25,
+            24
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/9/away1.png",
+            25,
+            24
+        ),
+        PokemonImage(
+            "assets/images/pokemon/9/away2.png",
+            25,
+            24
+        )
+    ),
+    PokemonWalkingAnimation(
+        PokemonImage(
+            "assets/images/pokemon/9/towards1.png",
+            25,
+            24
+        ),
+        PokemonImage(
+            "assets/images/pokemon/9/towards2.png",
+            25,
+            24
         )
     )
 )
