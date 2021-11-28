@@ -17,14 +17,14 @@ class Combat():
     def __init__(self, surface, player, enemy):
         self.player = player
         self.enemy = enemy
-        self.combat_surface = self.load_image("assets/battle_bg.png", 400, 500)
+        self.combat_surface = self.load_image("assets/images/battle_bg.png", 400, 500)
         self.finished = False
 
 
     def update_combat(self, screen):
-        screen.blit(pygame.font.Font.render(pygame.font.Font("smallest_pixel-7.ttf", 24), f"{str(self.player.hp)}/{str(self.player.max_hp)}" , True, (0, 0, 0)), (100, 320))
-        screen.blit(pygame.font.Font.render(pygame.font.Font("smallest_pixel-7.ttf", 24), f"{str(self.enemy.hp)}/{str(self.enemy.max_hp)}", True, (0, 0, 0)), (260, 60))
-        screen.blit(pygame.font.Font.render(pygame.font.Font("smallest_pixel-7.ttf", 24), self.combat_text(), True, (0, 0, 0)), (40, 400))
+        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.player.hp)}/{str(self.player.max_hp)}" , True, (0, 0, 0)), (100, 320))
+        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.enemy.hp)}/{str(self.enemy.max_hp)}", True, (0, 0, 0)), (260, 60))
+        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), self.combat_text(), True, (0, 0, 0)), (40, 400))
         pygame.display.update()
 
     def take_turn(self):
