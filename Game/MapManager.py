@@ -1,6 +1,11 @@
 from random import choice
 
+
 class Background():
+    """
+    Manage background images
+    """
+
     def __init__(self, name, image, pokemonSpawns, disallowedRegions, dangerRegions):
         self._name = name
         self._image = image
@@ -13,62 +18,126 @@ class Background():
         self._dangerRegions = dangerRegions
 
     def getName(self):
+        """
+        Get zone name
+        """
         return self._name
 
     def getImage(self):
+        """
+        Get file path to image PNG
+        """
         return self._image
 
     def getAllPokemonSpawns(self):
+        """
+        Get all coordinates deemed suitable for Pokemon spawns
+        """
         return self._pokemonSpawns
 
     def getRandomPokemonSpawn(self):
+        """
+        Get a random set of coordinates deemed suitable for Pokemon spawns
+        """
         return choice(self.getAllPokemonSpawns())
 
     def setLeft(self, left):
+        """
+        Set the zone which should appear when a player exits this zone to the left
+        """
         self._left = left
 
     def getLeft(self):
+        """
+        Get the zone which will appear when a player exits this zone to the left
+
+        Returns None if no zone is set
+        """
         return self._left
-    
+
     def setRight(self, right):
+        """
+        Set the zone which should appear when a player exits this zone to the right
+        """
         self._right = right
 
     def getRight(self):
+        """
+        Get the zone which will appear when a player exits this zone to the right
+
+        Returns None if no zone is set
+        """
         return self._right
 
     def setBeneath(self, beneath):
+        """
+        Set the zone which should appear when a player exits this zone at the bottom
+        """
         self._beneath = beneath
 
     def getBeneath(self):
+        """
+        Get the zone which will appear when a player exits this zone at the bottom
+
+        Returns None if no zone is set
+        """
         return self._beneath
 
     def setAbove(self, above):
+        """
+        Set the zone which should appear when a player exits this zone at the top
+        """
         self._above = above
 
     def getAbove(self):
+        """
+        Get the zone which will appear when a player exits this zone at the top
+
+        Returns None if no zone is set
+        """
         return self._above
 
     def isDisallowedRegion(self, x, y):
+        """
+        Checks if a player has entered a disallowed region of this zone
+
+        Returns True if the player is in a disallowed region. Otherwise, returns False.
+        """
         for region in self._disallowedRegions:
             if region[0] < x < region[2] and region[1] < y < region[3]:
                 return True
         return False
 
     def isDangerRegion(self, x, y):
+        """
+        Checks if a player has entered a dangerous region of this zone
+
+        Returns True if the player is in a dangerous region. Otherwise, returns False.
+        """
         for region in self._dangerRegions:
             if region[0] < x < region[2] and region[1] < y < region[3]:
                 return True
         return False
 
+
 def getMaps():
+    """
+    Returns all zones which make up the map
+    """
     return [forest, spawn, city, meadow, canyon]
 
+
 def getFirstMap():
+    """
+    Returns the spawn zone
+    """
     return spawn
 
+
+# Initialise all zones
 forest = Background(
-    "Forest", 
-    "assets/maps/forest.png", 
+    "Forest",
+    "assets/images/maps/forest.png",
     [
         [195, 155]
     ],
@@ -86,26 +155,26 @@ forest = Background(
     []
 )
 spawn = Background(
-    "Spawn", 
-    "assets/maps/spawn.png", 
+    "Spawn",
+    "assets/images/maps/spawn.png",
     [
-        [155, 205], 
-        [155, 290], 
-        [245, 290], 
+        [155, 205],
+        [155, 290],
+        [245, 290],
         [245, 205]
     ],
     [
-        [160, 40, 240, 115], 
+        [160, 40, 240, 115],
         [190, 220, 225, 250]
     ],
     []
 )
 city = Background(
-    "City", 
-    "assets/maps/city.png", 
+    "City",
+    "assets/images/maps/city.png",
     [
         [160, 110]
-    ], 
+    ],
     [
         [25, 40, 85, 120],
         [85, 5, 150, 120],
@@ -118,11 +187,11 @@ city = Background(
     []
 )
 meadow = Background(
-    "Meadow", 
-    "assets/maps/meadow.png", 
+    "Meadow",
+    "assets/images/maps/meadow.png",
     [
         [95, 255]
-    ], 
+    ],
     [],
     [
         [0, 325, 40, 380],
@@ -143,7 +212,7 @@ meadow = Background(
 )
 canyon = Background(
     "Canyon",
-    "assets/maps/canyon.png",
+    "assets/images/maps/canyon.png",
     [
         [190, 220]
     ],
