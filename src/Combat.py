@@ -2,7 +2,7 @@ import pygame
 import random
 
 from utils import load_image, render_text
-
+import db
 
 class Combat():
     """
@@ -50,7 +50,9 @@ class Combat():
             return "Mash Space to see who wins!!"
         elif self.player.hp <= 0:
             self.finished = True
+            db.update(self.enemy.data.get_id(), -1)
             return f"{self.enemy.data.getName()} wins!"
         elif self.enemy.hp <= 0:
             self.finished = True
+            db.update(self.enemy.data.get_id(), 1)
             return "The Trainer wins!"
