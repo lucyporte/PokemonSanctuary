@@ -38,6 +38,7 @@ class App:
 
         # Generate textbox
         self.textbox = TextBox(self.screen)
+        self.textbox.set_text("I gotta catch them all")
 
         # Generate player
         self.player = Player()
@@ -77,10 +78,16 @@ class App:
             is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
             if is_interesting_region:
                 # Display information in text box
-                self.textbox.set_text(is_interesting_region)
+                lines = is_interesting_region.split("/n")
+                count = 1
+                for line in lines:
+                    self.textbox.set_text(line, count)
+                    count += 1
+                count = 1
             else:
                 # Clear information in text box
                 self.textbox.set_text("")
+            print(pygame.mouse.get_pos())
 
             # Check if a Pokemon has been clicked
             if self.pokemon:
@@ -95,23 +102,24 @@ class App:
                     self.pokemon_list.empty()
 
         # Handle a keypress starting
+        steps = 1
         if event.type == pygame.KEYDOWN:
             # Detect left key or "a" key
             if pygame.key.get_pressed()[pygame.K_LEFT] or event.key == ord("a"):
                 # Move player left
-                self.player.set_x_velocity(-1)
+                self.player.set_x_velocity(-steps)
             # Detect right key or "d" key
             if event.key == pygame.K_RIGHT or event.key == ord("d"):
                 # Move player right
-                self.player.set_x_velocity(1)
+                self.player.set_x_velocity(steps)
             # Detect up key or "w" key
             if event.key == pygame.K_UP or event.key == ord("w"):
                 # Move player up
-                self.player.set_y_velocity(-1)
+                self.player.set_y_velocity(-steps)
             # Detect down key or "s" key
             if event.key == pygame.K_DOWN or event.key == ord("s"):
                 # Move player down
-                self.player.set_y_velocity(1)
+                self.player.set_y_velocity(steps)
             # Redraw GUI
             pygame.display.flip()
 
