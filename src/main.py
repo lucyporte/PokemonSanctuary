@@ -27,6 +27,7 @@ class App:
         pygame.init()
 
         # Initialise sound module
+        self.playing_music = True
         pygame.mixer.music.load("assets/audio/background.mp3")
         pygame.mixer.music.play(-1)
 
@@ -61,7 +62,7 @@ class App:
         pygame.mouse.set_visible(False)
 
         # Initialise custom cursor
-        self.cursor = load_image("assets/images/cursor.png", 20, 20)
+        self.cursor = load_image("assets/images/cursor1.png", 20, 20)
 
     def on_event(self, event):
         # Closing the window (with the X) ends the game
@@ -132,6 +133,16 @@ class App:
                 # Quit the game
                 pygame.quit()
                 sys.exit()
+
+            if event.key == ord("m"):
+                # Mute/Unmute
+                if self.playing_music:
+                    pygame.mixer.music.pause()
+                    self.playing_music = False
+                else:
+                    pygame.mixer.music.unpause()
+                    self.playing_music = True
+
 
     def on_loop(self):
         """
