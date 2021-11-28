@@ -136,13 +136,13 @@ class App:
         # Detect if player has entered a disallowed region
         if self.map.is_disallowed_region(self.player.rect.x, self.player.rect.y):
             # Prevent movement
-            if self.player.velocityX == 1:
+            if self.player.velocity_x == 1:
                 self.player.rect.x -= 1
-            if self.player.velocityX == -1:
+            if self.player.velocity_x == -1:
                 self.player.rect.x += 1
-            if self.player.velocityY == 1:
+            if self.player.velocity_y == 1:
                 self.player.rect.y -= 1
-            if self.player.velocityY == -1:
+            if self.player.velocity_y == -1:
                 self.player.rect.y += 1
 
         # Detect if player has entered a dangerous region
