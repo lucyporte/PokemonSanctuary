@@ -235,7 +235,8 @@ forest = Background(
         [0, 0, 90, 230],
         [0, 260, 90, 400],
         [305, 0, 400, 230],
-        [90, 0, 260, 50]
+        [90, 0, 260, 50],
+        [0, 0, 400, 45]
     ],
     []
 )
@@ -322,17 +323,22 @@ canyon = Background(
     ]
 )
 
+forest.set_left(None, 230, 270)
 forest.set_right(spawn, 235, 275)
 forest.set_beneath(meadow, 95, 135)
 
 spawn.set_left(forest, 235, 275)
-spawn.set_beneath(canyon, 190, 230)
 spawn.set_right(city, 235, 275)
+spawn.set_beneath(canyon, 190, 230)
 
 city.set_left(spawn, 235, 275)
+city.set_above(None, 185, 230)
+city.set_right(None, 155, 190)
+city.set_beneath(None, 185, 230)
 
 meadow.set_above(forest, 95, 135)
 meadow.set_right(canyon, 235, 275)
 
 canyon.set_left(meadow, 235, 275)
 canyon.set_above(spawn, 190, 230)
+canyon.set_right(None, 235, 275)

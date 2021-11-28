@@ -73,6 +73,7 @@ class App:
 
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
+            print(event.pos)
             # Check if an interesting region has been clicked
             is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
             if is_interesting_region:
@@ -188,6 +189,8 @@ class App:
             self.player.rect.x = 390 - self.player.rect.x
         elif self.player.rect.x < 0:
             self.player.rect.x = 0
+            if self.map.get_left_bounds() and self.map.get_left_bounds()[0] < self.player.rect.y < self.map.get_left_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone to the right
         if self.player.rect.x == 395 and self.map.get_right() and self.map.get_right_bounds()[0] < self.player.rect.y < self.map.get_right_bounds()[1]:
             self.map = self.map.get_right()
@@ -195,6 +198,8 @@ class App:
             self.player.rect.x = 10
         elif self.player.rect.x > 395:
             self.player.rect.x = 395
+            if self.map.get_right_bounds() and self.map.get_right_bounds()[0] < self.player.rect.y < self.map.get_right_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone at the top
         if self.player.rect.y == 0 and self.map.get_above() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
             self.map = self.map.get_above()
@@ -202,6 +207,8 @@ class App:
             self.player.rect.y = 380
         elif self.player.rect.y < 0:
             self.player.rect.y = 0
+            if self.map.get_above_bounds() and self.map.get_above_bounds()[0] < self.player.rect.x < self.map.get_above_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
         # Detect if player should enter next zone at the bottom
         if self.player.rect.y == 385 and self.map.get_beneath() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
             self.map = self.map.get_beneath()
@@ -209,6 +216,8 @@ class App:
             self.player.rect.y = 10
         elif self.player.rect.y > 385:
             self.player.rect.y = 385
+            if self.map.get_beneath_bounds() and self.map.get_beneath_bounds()[0] < self.player.rect.x < self.map.get_beneath_bounds()[1]:
+                self.textbox.set_text("We shouldn't go too far away.")
 
     def on_render(self):
         """
