@@ -62,6 +62,15 @@ class App:
 
         # Handle mouse clicks
         if event.type == MOUSEBUTTONDOWN:
+            # Check if an interesting region has been clicked
+            is_interesting_region = self.map.is_interesting_region(event.pos[0], event.pos[1])
+            if is_interesting_region:
+                # Display information in text box
+                self.textbox.set_text(self.screen, is_interesting_region)
+            else:
+                # Clear information in text box
+                self.textbox.set_text(self.screen, "")
+
             # Check if a Pokemon has been clicked
             if self.pokemon:
                 pokemon_x = self.pokemon.rect.x

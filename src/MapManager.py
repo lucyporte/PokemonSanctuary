@@ -6,7 +6,7 @@ class Background():
     Manage background images
     """
 
-    def __init__(self, name, image, pokemonSpawns, disallowedRegions, dangerRegions):
+    def __init__(self, name, image, pokemonSpawns, interesting_regions, disallowed_regions, danger_regions):
         self._name = name
         self._image = image
         self._pokemonSpawns = pokemonSpawns
@@ -18,8 +18,9 @@ class Background():
         self._beneath_bounds = None
         self._above = None
         self._above_bounds = None
-        self._disallowedRegions = disallowedRegions
-        self._dangerRegions = dangerRegions
+        self._interesting_regions = interesting_regions
+        self._disallowed_regions = disallowed_regions
+        self._danger_regions = danger_regions
 
     def get_name(self):
         """
@@ -137,13 +138,26 @@ class Background():
         """
         return self._above_bounds
 
+    def is_interesting_region(self, x, y):
+        """
+        Checks if a player has clicked an interesting region of this zone
+
+        Returns information about the zone if an interesting region was clicked. Otherwise, returns None.
+        """
+        for region in self._interesting_regions:
+            start = region.get_start_coordinates()
+            end = region.get_end_coordinates()
+            if start[0] < x < end[0] and start[1] < y < end[1]:
+                return region.get_information()
+        return None
+
     def is_disallowed_region(self, x, y):
         """
         Checks if a player has entered a disallowed region of this zone
 
         Returns True if the player is in a disallowed region. Otherwise, returns False.
         """
-        for region in self._disallowedRegions:
+        for region in self._disallowed_regions:
             if region[0] < x < region[2] and region[1] < y < region[3]:
                 return True
         return False
@@ -154,10 +168,40 @@ class Background():
 
         Returns True if the player is in a dangerous region. Otherwise, returns False.
         """
-        for region in self._dangerRegions:
+        for region in self._danger_regions:
             if region[0] < x < region[2] and region[1] < y < region[3]:
                 return True
         return False
+
+
+class InterestingRegion():
+    """
+    Manage an interesting region
+    """
+    def __init__(self, information, x1, y1, x2, y2):
+        self._information = information
+        self._x1 = x1
+        self._y1 = y1
+        self._x2 = x2
+        self._y2 = y2
+
+    def get_information(self):
+        """
+        Return the information associated with this region
+        """
+        return self._information
+
+    def get_start_coordinates(self):
+        """
+        Return the coordinates at the upper left of this region
+        """
+        return [self._x1, self._y1]
+
+    def get_end_coordinates(self):
+        """
+        Return the coordinates at the lower right of this region
+        """
+        return [self._x2, self._y2]
 
 
 def get_maps():
@@ -181,6 +225,7 @@ forest = Background(
     [
         [195, 155]
     ],
+    [],
     [
         [120, 175, 190, 225],
         [210, 175, 280, 225],
@@ -203,6 +248,7 @@ spawn = Background(
         [245, 290],
         [245, 205]
     ],
+    [],
     [
         [160, 40, 240, 115],
         [190, 220, 225, 250]
@@ -215,6 +261,7 @@ city = Background(
     [
         [160, 110]
     ],
+    [],
     [
         [25, 40, 85, 120],
         [85, 5, 150, 120],
@@ -232,6 +279,7 @@ meadow = Background(
     [
         [95, 255]
     ],
+    [],
     [],
     [
         [0, 325, 40, 380],
@@ -256,6 +304,7 @@ canyon = Background(
     [
         [190, 220]
     ],
+    [],
     [],
     [
         [250, 0, 355, 35],
