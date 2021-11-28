@@ -168,7 +168,12 @@ class App:
             # Kill player
             self.player_list.empty()
             self.player.dead = True
+            pygame.mixer.music.pause()
+            self.on_render()
             self.textbox.set_text("You died.")
+            # Respawn after 5 seconds
+            pygame.time.delay(5000)
+            self.on_init()
 
         # Redraw Pokemon at their current position if they exist
         if self.pokemon_list:
