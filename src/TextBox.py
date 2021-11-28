@@ -13,8 +13,9 @@ class TextBox():
         """
         Set the text displayed in the text box
         """
-        # Reset textbox each time
-        self.screen.blit(self.textbox_background, (0, 400))
+        if line == 1:
+            # Reset textbox each time
+            self.screen.blit(self.textbox_background, (0, 400))
 
         if line == 1:
             x, y = 25, 410

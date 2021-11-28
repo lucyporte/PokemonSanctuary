@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import sys
+from random import randint
 
 from utils import load_image
 
@@ -10,6 +11,7 @@ from TextBox import TextBox
 from Combat import Combat
 import MapManager
 import PokemonManager
+import db
 
 
 class App:
@@ -249,13 +251,21 @@ class App:
         self.map_background = load_image(self.map.get_image(), 400, 400)
         # Delete all Pokemon in previous zone
         self.pokemon_list.empty()
-        # Spawn new Pokemon
-        new_pokemon = PokemonManager.get_random()
-        coords = self.map.get_random_pokemon_spawn()
-        self.pokemon = Pokemon(new_pokemon)
-        self.pokemon.rect.x = coords[0]
-        self.pokemon.rect.y = coords[1]
-        self.pokemon_list.add(self.pokemon)
+        # Possibly spawn new Pokemon
+        if randint(0, 4) == 0:
+            new_pokemon = PokemonManager.get_random()
+            coords = self.map.get_random_pokemon_spawn()
+            self.pokemon = Pokemon(new_pokemon)
+            self.pokemon.rect.x = coords[0]
+            self.pokemon.rect.y = coords[1]
+            self.pokemon_list.add(self.pokemon)
+            # Display text message
+            analyse = db.analyse(self.pokemon.data.get_id())
+            self.textbox.set_text(analyse[0])
+            self.textbox.set_text(analyse[1], 2)
+            self.textbox.set_text(analyse[2], 3)
+        else:
+            self.textbox.set_text("")
 
     def on_cleanup(self):
         """
