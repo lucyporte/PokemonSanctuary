@@ -1,7 +1,7 @@
 import pygame
 import random
 
-from utils import load_image
+from utils import load_image, render_text
 
 
 class Combat():
@@ -22,11 +22,11 @@ class Combat():
         # Enemy Sprite
         screen.blit(load_image(self.enemy.data.getDownWalkSprite().getFrame1().getPath(), 125, 125), (50, 10))
         # Player HP
-        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.player.hp)}/{str(self.player.max_hp)}", True, (0, 0, 0)), (100, 320))
+        screen.blit(render_text(f"{str(self.player.hp)}/{str(self.player.max_hp)}"), (100, 320))
         # Enemy HP
-        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), f"{str(self.enemy.hp)}/{str(self.enemy.max_hp)}", True, (0, 0, 0)), (260, 60))
+        screen.blit(render_text(f"{str(self.enemy.hp)}/{str(self.enemy.max_hp)}"), (260, 60))
         # Combat Text
-        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 24), self.combat_text(), True, (0, 0, 0)), (40, 400))
+        screen.blit(render_text(self.combat_text()), (40, 400))
         # Make Update
         pygame.display.update()
 

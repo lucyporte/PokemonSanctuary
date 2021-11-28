@@ -1,5 +1,7 @@
 import pygame
 
+from utils import render_text
+
 
 class TextBox():
     def set_text(self, screen, text, line=1):
@@ -17,5 +19,5 @@ class TextBox():
         elif line == 5:
             x, y, = 25, 470
 
-        screen.blit(pygame.font.Font.render(pygame.font.Font("assets/fonts/smallest_pixel-7.ttf", 16), text, True, (0, 0, 0)), (x, y))
+        screen.blit(render_text(text), (x, y))
         pygame.display.update()
