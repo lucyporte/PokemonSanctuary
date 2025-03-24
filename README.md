@@ -19,3 +19,4 @@ The world has been devastated by nuclear war. Only Pokemon are left... and you. 
 - Issie Shaw
 - Lucy Jefford
 - Sam Hirst
+- Lucy Porte
